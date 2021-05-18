@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/droidsolutions/semantic-release-update-file#readme",
   "dependencies": {
-    "aggregate-error": "^4.0.0",
+    "aggregate-error": "^3.1.0",
     "lodash.template": "^4.5.0"
   },
   "devDependencies": {
@@ -95,8 +95,8 @@
   },
   "mocha": {
     "extension": [
-      "ts",
-      "js"
+      ".ts",
+      ".js"
     ],
     "recursive": true,
     "require": [
