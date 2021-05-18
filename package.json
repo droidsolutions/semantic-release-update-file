@@ -1,5 +1,5 @@
 {
-  "name": "@droidsolutions/semantic-release-update-file",
+  "name": "@droidsolutions-oss/semantic-release-update-file",
   "version": "1.0.1",
   "description": "Semantic Release plugin to help with updating files during release.",
   "main": "dist/index.js",
