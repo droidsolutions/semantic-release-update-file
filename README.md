@@ -33,7 +33,7 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
       "@semantic-release/release-notes-generator",
       "@semantic-release/npm",
       [
-        "@droidsolutions/semantic-release-update-file",
+        "@droidsolutions-oss/semantic-release-update-file",
         {
           "files": [
             {
