@@ -2,7 +2,7 @@
 
 [**semantic-release**](https://github.com/semantic-release/semantic-release) plugin to help with updating files during release.
 
-[![Build Status](https://github.com/droidsolutions/semantic-release-update-file/workflows/Main/badge.svg)](https://github.com/droidsolutions/semantic-release-update-file/actions?query=workflow%3AMain+branch%3Amain)
+[![main](https://github.com/droidsolutions/semantic-release-update-file/actions/workflows/main.yml/badge.svg)](https://github.com/droidsolutions/semantic-release-update-file/actions/workflows/main.yml)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![npm (scoped)](https://img.shields.io/npm/v/@droidsolutions-oss/semantic-release-update-file)](https://www.npmjs.com/package/@droidsolutions-oss/semantic-release-update-file)
 
