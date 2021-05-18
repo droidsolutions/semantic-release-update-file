@@ -1,0 +1,22 @@
+<Project>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)stylecop.ruleset</CodeAnalysisRuleSet>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Authors>Stefan Ißmer</Authors>
+    <Company>DroidSolutions GmbH</Company>
+    <Description>An example xml file for debugging purposes.
+    </Description>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <RepositoryUrl>git@example.git</RepositoryUrl>
+    <RepositoryBranch>main</RepositoryBranch>
+    <RepositoryCommit>2e5a8557392548f0c7463a102efdb0add0ee5aab</RepositoryCommit>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+  </ItemGroup>
+</Project>
