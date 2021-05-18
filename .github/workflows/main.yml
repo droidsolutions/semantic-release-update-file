@@ -27,7 +27,7 @@ jobs:
       - name: transpile TypeScript
         run: npx tsc
       - name: Upload artifacts
-        uses: actions/upload-artifacts@v2.2.3
+        uses: actions/upload-artifact@v2
         with:
           name: lib
           path: lib
