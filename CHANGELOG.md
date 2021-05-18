@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.0.1...v1.0.2) (2021-05-18)
+
+
+### Bug Fixes
+
+* set correct package scope ([bcb191c](https://github.com/droidsolutions/semantic-release-update-file/commit/bcb191c270f1d624c96929502e23dda72b814116))
+
 ## [1.0.1](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.0.0...v1.0.1) (2021-05-18)
 
 
