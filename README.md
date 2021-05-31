@@ -26,7 +26,6 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
 ```json
 {
   "release": {
-    "gitlabUrl": "https://gitlab.droidnet.de",
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/changelog",
@@ -49,7 +48,7 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
               "branches": ["main", "develop"]
             },
             {
-              "path": ["Directory.build.props"],
+              "path": ["Directory.Build.props"],
               "type": "xml",
               "replacements": [{ "key": "Version", "value": "${nextRelease.version}" }]
             }
@@ -65,7 +64,7 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
             "k8s/prod/deployment.yaml",
             "k8s/test/deployment.yaml",
             "CHANGELOG.md",
-            "Directory.build.props"
+            "Directory.Build.props"
           ],
           "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         }
@@ -79,7 +78,7 @@ With this example there will be 3 files updated:
 
 - In the file `k8s/prod/deployment.yaml` the version of the image `my.registry.com/some/image` will be updated to the one Semantic Release calculated as the new version. This file will only be updated when the name of branch in which the release runs is `main`.
 - The same applies to the file `k8s/test/deployment.yaml` but it will also be updated when the name of branch in which the release runs is `develop`.
-- In the XML file `Directory.build.props` the value of the tag `Version` will be set to the version Semantic Release calculated as new.
+- In the XML file `Directory.Build.props` the value of the tag `Version` will be set to the version Semantic Release calculated as new.
 
 Also the git plugin config is updated to include the changed files in the commit (so they can be user later).
 
