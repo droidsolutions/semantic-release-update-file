@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.0.2...v1.0.3) (2021-06-09)
+
+
+### Bug Fixes
+
+* Merge pull request [#24](https://github.com/droidsolutions/semantic-release-update-file/issues/24) from droidsolutions/dependabot/npm_and_yarn/normalize-url-6.0.1 ([c8859de](https://github.com/droidsolutions/semantic-release-update-file/commit/c8859deed39457e826ae49512418c1a0fa84d0f9))
+
 ## [1.0.2](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.0.1...v1.0.2) (2021-05-18)
 
 
