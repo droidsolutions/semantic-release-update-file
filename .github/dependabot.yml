@@ -16,6 +16,4 @@ updates:
   assignees:
     - "kampfmoehre"
   open-pull-requests-limit: 10
-  automerged_updates:
-   - match:
-      dependency_name: "@types/*"
+  
