@@ -66,7 +66,7 @@ jobs:
       - name: Install packages
         run: npm ci --no-fund
       - name: Download lib from build job
-        uses: actions/download-artifact@v2.0.10
+        uses: actions/download-artifact@v2.1.0
         with:
           name: lib
           path: dist/
