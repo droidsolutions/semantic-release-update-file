@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use NodeJS
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v2.5.1
       - name: Install packages
         run: npm ci --no-fund
       - name: Run ESLint
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use NodeJS
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v2.5.1
       - name: Install packages
         run: npm ci --no-fund
       - name: transpile TypeScript
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use NodeJS
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v2.5.1
         with:
           node-version: ${{ matrix.node }}
       - name: Install packages
@@ -62,7 +62,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Use Node.js
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v2.5.1
       - name: Install packages
         run: npm ci --no-fund
       - name: Download lib from build job
