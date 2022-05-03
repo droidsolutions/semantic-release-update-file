@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.0.3...v1.1.0) (2022-05-03)
+
+
+### Features
+
+* add support for updating container files ([65dcb44](https://github.com/droidsolutions/semantic-release-update-file/commit/65dcb44cfad74d9da7ae0015c24a60ae7da0769a))
+* **Kubernetes:** support image tag suffixes ([67f7c05](https://github.com/droidsolutions/semantic-release-update-file/commit/67f7c0519dfd5fb0b74766b9b8701a3d5e4c85cd))
+
 ## [1.0.3](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.0.2...v1.0.3) (2021-06-09)
 
 
