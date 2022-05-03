@@ -1,7 +1,7 @@
 import AggregateError from "aggregate-error";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-import { FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "../lib/supportedFileTypes";
+import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "../lib/supportedFileTypes";
 import { K8sFileSpec, UserConfig, XmlFileSpec } from "../lib/UserConfig";
 import { verify } from "../lib/verify";
 
@@ -79,5 +79,12 @@ describe("verify", function () {
     await chai
       .expect(verify(config))
       .to.be.rejectedWith(AggregateError, "Each XML file replacement must have a key and a value set!");
+  });
+
+  it("should return an error when file type is containerfile and a label has no value", async function () {
+    const config: UserConfig = {
+      files: [{ type: FILE_TYPE_CONTAINERFILE, path: "some/path" } as unknown as XmlFileSpec],
+    };
+    await chai.expect(verify(config)).to.be.rejectedWith(AggregateError, "Containerfiles need a label to be replaced.");
   });
 });

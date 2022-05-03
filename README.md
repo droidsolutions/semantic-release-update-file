@@ -51,6 +51,11 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
               "path": ["Directory.Build.props"],
               "type": "xml",
               "replacements": [{ "key": "Version", "value": "${nextRelease.version}" }]
+            },
+            {
+              "path": ["Dockerfile"],
+              "type": "containerfile",
+              "label": "version"
             }
           ]
         }
@@ -64,7 +69,8 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
             "k8s/prod/deployment.yaml",
             "k8s/test/deployment.yaml",
             "CHANGELOG.md",
-            "Directory.Build.props"
+            "Directory.Build.props",
+            "Dockerfile"
           ],
           "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         }
@@ -74,11 +80,12 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
 }
 ```
 
-With this example there will be 3 files updated:
+With this example there will be 4 files updated:
 
 - In the file `k8s/prod/deployment.yaml` the version of the image `my.registry.com/some/image` will be updated to the one Semantic Release calculated as the new version. This file will only be updated when the name of branch in which the release runs is `main`.
 - The same applies to the file `k8s/test/deployment.yaml` but it will also be updated when the name of branch in which the release runs is `develop`.
 - In the XML file `Directory.Build.props` the value of the tag `Version` will be set to the version Semantic Release calculated as new.
+- In the `Dockerfile` the value of the label `version` will be set to the new version.
 
 Also the git plugin config is updated to include the changed files in the commit (so they can be user later).
 
@@ -92,7 +99,7 @@ This is a required field where you specify the path (relative to the root projec
 
 #### type
 
-One of the supported file types. Currently these are `k8s` for yaml files, `flutter` for Dart `pubspec.yaml` files and `xml` for XML files like Dotnet project files.
+One of the supported file types. Currently these are `k8s` for yaml files, `flutter` for Dart `pubspec.yaml` files, `xml` for XML files like Dotnet project files and `containerfile` for Dockerfiles.
 
 #### branches
 
@@ -176,6 +183,10 @@ With the following configuration Semantic Release would update the VersionPrefix
 Now the VersionPrefix is up to date (and you could in a later Semantic Release step create a NuGet package with the version in the file) and the RepositoryCommit points to the commit that triggered the release.
 
 The key must be a valid XML tag in the files you give. If it don't exist an error is logged but the execution of Semantic Release will continue. The value can be a fixed value as well as any object from the Semantic Release context which is extracted via a template function. This includes information about the last and the new release as well as Environment Variables you set yourself. For more information see [the documentation](https://semantic-release.gitbook.io/semantic-release/developer-guide/plugin#context).
+
+#### label
+
+When specifiying a container file (like Dockerfiles) you can specify a label inside the file that should be updated along during Semantic Release. For example if you add a label to your containerfile specifiying the application version you can update it with this plugin.
 
 ## Development
 

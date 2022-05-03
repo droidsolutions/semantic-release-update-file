@@ -1,7 +1,7 @@
 import chai from "chai";
 import { Context } from "semantic-release";
 import Sinon, { SinonSpy } from "sinon";
-import { updateK8sYaml, updatePubspecVersion, updateXml } from "../lib/versionReplacer";
+import { updateContainerfile, updateK8sYaml, updatePubspecVersion, updateXml } from "../lib/versionReplacer";
 
 describe("versionReplacer", function () {
   context("updateK8sYaml", function () {
@@ -149,6 +149,49 @@ dev_dependencies:
       chai
         .expect(logSpy.args[0][0])
         .to.equal("Skipping replacement of key RepositoryBranch in xml file because value would be empty.");
+    });
+  });
+
+  context("updateContainerfile", function () {
+    let context: Context & { branch: { name: string } };
+    const sampleContent = `FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
+
+LABEL maintainer="Stefan Ißmer | DroidSolutions GmbH <stefan.issmer@droidsolutions.de"
+LABEL version="v1.1.0"
+
+WORKDIR /source`;
+
+    before(function () {
+      context = {
+        nextRelease: {
+          version: "1.2.0",
+          gitHead: "8d019d592c357f5db71cd585aacd39222e71a21e",
+          gitTag: "v1.2.0",
+          notes: "",
+          type: "minor",
+        },
+        logger: {
+          error: Sinon.spy() as any,
+          log: Sinon.spy() as any,
+        },
+        env: {
+          CI_COMMIT_SHA: "8d019d592c357f5db71cd585aacd39222e71a21e",
+        },
+        branch: { name: "master" },
+      };
+    });
+
+    it("should replace version label", function () {
+      const actual = updateContainerfile(sampleContent, "version", context);
+
+      const expected = `FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
+
+LABEL maintainer="Stefan Ißmer | DroidSolutions GmbH <stefan.issmer@droidsolutions.de"
+LABEL version="v1.2.0"
+
+WORKDIR /source`;
+
+      chai.expect(actual).to.equal(expected);
     });
   });
 });

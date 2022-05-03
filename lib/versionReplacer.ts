@@ -81,6 +81,26 @@ export const updateXml = (
 };
 
 /**
+ * Replaces the label value of a containerfile with the new version
+ * @param content The file content.
+ * @param label The name of the label to update.
+ * @param context The semantic release context.
+ * @returns The given content with the value of the given label replaced with the new version number.
+ */
+export const updateContainerfile = (content: string, label: string, context: Context): string => {
+  const regex = new RegExp(`^LABEL\\s+${label}=\\"v?(.*)\\"$`, "m");
+  const match = content.match(regex);
+
+  if (match === null) {
+    context.logger.error(`Unable to match label ${label} in containerfile`);
+
+    return content;
+  }
+
+  return content.replace(match[0], match[0].replace(match[1], context.nextRelease?.version as string));
+};
+
+/**
  * Escapes an input to be compatible with regex.
  *
  * @param {string} value

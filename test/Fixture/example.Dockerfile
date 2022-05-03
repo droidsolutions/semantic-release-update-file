@@ -1,0 +1,11 @@
+FROM alpine:latest
+LABEL maintainer="Stefan Ißmer <stefan.issmer@droidsolutions.de"
+LABEL org.opencontainers.image.authors="Stefan Ißmer <stefan.issmer@droidsolutions.de"
+LABEL org.opencontainers.image.url="https://github.com/droidsolutions/semantic-release-update-file.git"
+LABEL org.opencontainers.image.source="https://github.com/droidsolutions/semantic-release-update-file.git"
+LABEL org.opencontainers.image.vendor="DroidSolutions GmbH"
+LABEL org.opencontainers.image.title="Example Dockerfile that can be updadted"
+LABEL org.opencontainers.image.description="This is just an example Dockerfile that could be updated using this Semantic Release plugin."
+LABEL org.opencontainers.image.created="2021-11-22T15:28:57.130Z"
+LABEL org.opencontainers.image.version="v1.1.0"
+LABEL org.opencontainers.image.revision="9ada5b24dd2708163e03f04d17f33c1f310c281d"

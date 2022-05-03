@@ -1,9 +1,15 @@
-import { FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML, SupportedFileTypes } from "./supportedFileTypes";
+import {
+  FILE_TYPE_CONTAINERFILE,
+  FILE_TYPE_FLUTTER,
+  FILE_TYPE_K8S,
+  FILE_TYPE_XML,
+  SupportedFileTypes,
+} from "./supportedFileTypes";
 
 /** Possible configuration for the plugin. */
 export interface UserConfig {
   /** A list of files to update during release. */
-  files: Array<K8sFileSpec | XmlFileSpec | FlutterFileSpec>;
+  files: Array<K8sFileSpec | XmlFileSpec | FlutterFileSpec | ContainerFileSpec>;
 }
 
 /** Base spec for all files. */
@@ -33,6 +39,13 @@ export interface XmlFileSpec extends FileSpec {
 /** A pubspec.yaml file. */
 export interface FlutterFileSpec extends FileSpec {
   type: typeof FILE_TYPE_FLUTTER;
+}
+
+/** A containerfile */
+export interface ContainerFileSpec extends FileSpec {
+  type: typeof FILE_TYPE_CONTAINERFILE;
+  /** The label to replace. */
+  label: string;
 }
 
 /** A key/value pair for XML file replacements. */

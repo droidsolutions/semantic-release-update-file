@@ -23,6 +23,7 @@ describe("prepare", function () {
     string
   >;
   let updatePubspecStub: sinon.SinonStub<[pubspecContent: string, oldVersion: string, newVersion: string], string>;
+  let updateContainerfileStub: sinon.SinonStub<[containerContent: string, label: string, context: Context], string>;
 
   before(function () {
     context = {
@@ -45,18 +46,21 @@ describe("prepare", function () {
     updateK8sYamlStub = sinon.stub(versionReplacer, "updateK8sYaml");
     updateXmlStub = sinon.stub(versionReplacer, "updateXml");
     updatePubspecStub = sinon.stub(versionReplacer, "updatePubspecVersion");
+    updateContainerfileStub = sinon.stub(versionReplacer, "updateContainerfile");
   });
 
   afterEach(function () {
     updateK8sYamlStub.reset();
     updateXmlStub.reset();
     updatePubspecStub.reset();
+    updateContainerfileStub.reset();
   });
 
   after(function () {
     updateK8sYamlStub.restore();
     updateXmlStub.restore();
     updatePubspecStub.restore();
+    updateContainerfileStub.restore();
   });
 
   it("should throw an Error if nextRelease is missing", async function () {
@@ -134,20 +138,28 @@ describe("prepare", function () {
       replacements: [{ key: "Version", value: "${nextRelease.version}" }],
       newContent: "<version>1.1.0</version>",
     };
+    const containerFile = {
+      path: "e/Dockerfile",
+      content: 'LABEL version="v1.0.0"',
+      newContent: 'LABEL version="v1.1.0"',
+    };
 
     updateK8sYamlStub.returns(k8sFile.newContent);
     updateXmlStub.returns(xmlFile.newContent);
     updatePubspecStub.returns(pubspecFile.newContent);
+    updateContainerfileStub.returns(containerFile.newContent);
 
     const readFileStub = sinon.stub(fs.promises, "readFile");
     readFileStub.withArgs(k8sFile.path).resolves(k8sFile.content);
     readFileStub.withArgs(pubspecFile.path).resolves(pubspecFile.content);
     readFileStub.withArgs(xmlFile.path).resolves(xmlFile.content);
+    readFileStub.withArgs(containerFile.path).resolves(containerFile.content);
 
     const writeFileStub = sinon.stub(fs.promises, "writeFile");
     writeFileStub.withArgs(k8sFile.path, k8sFile.newContent).resolves(undefined);
     writeFileStub.withArgs(pubspecFile.path, pubspecFile.newContent).resolves(undefined);
     writeFileStub.withArgs(xmlFile.path, xmlFile.newContent).resolves(undefined);
+    writeFileStub.withArgs(containerFile.path, containerFile.newContent).resolves(undefined);
 
     const customContext = {
       ...context,
@@ -160,6 +172,7 @@ describe("prepare", function () {
           { type: "k8s", branches: ["main"], image: k8sFile.image, path: k8sFile.path },
           { type: "flutter", branches: "main", path: pubspecFile.path },
           { type: "xml", path: xmlFile.path, replacements: xmlFile.replacements },
+          { type: "containerfile", path: containerFile.path, label: "version" },
         ],
       },
       customContext,
@@ -175,5 +188,6 @@ describe("prepare", function () {
       ),
     ).to.be.true;
     expect(updateXmlStub.calledOnceWithExactly(xmlFile.content, xmlFile.replacements, customContext)).to.be.true;
+    expect(updateContainerfileStub.calledOnceWithExactly(containerFile.content, "version", customContext)).to.be.true;
   });
 });

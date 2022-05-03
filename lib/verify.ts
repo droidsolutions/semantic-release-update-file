@@ -2,7 +2,7 @@ import AggregateError from "aggregate-error";
 import fs from "fs";
 import { access } from "fs/promises";
 import { Config } from "semantic-release";
-import { FILE_TYPE_K8S, FILE_TYPE_XML, supportedFileTypes } from "./supportedFileTypes";
+import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_K8S, FILE_TYPE_XML, supportedFileTypes } from "./supportedFileTypes";
 import { UserConfig } from "./UserConfig";
 
 /**
@@ -47,6 +47,10 @@ export const verify = async (pluginConfig: Config & UserConfig): Promise<void> =
             }
           }
         }
+      }
+
+      if (file.type === FILE_TYPE_CONTAINERFILE && !file.label) {
+        errors.push("Containerfiles need a label to be replaced.");
       }
 
       if (!file.path) {

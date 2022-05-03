@@ -1,8 +1,8 @@
 import { readFile, writeFile } from "fs/promises";
 import { Config, Context } from "semantic-release";
-import { FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "./supportedFileTypes";
+import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "./supportedFileTypes";
 import { UserConfig } from "./UserConfig";
-import { updateK8sYaml, updateXml, updatePubspecVersion } from "./versionReplacer";
+import { updateK8sYaml, updateXml, updatePubspecVersion, updateContainerfile } from "./versionReplacer";
 
 /**
  * Executes the prepare step of the Semantic Release plugin.
@@ -68,6 +68,9 @@ export const prepare = async (
           break;
         case FILE_TYPE_FLUTTER:
           content = updatePubspecVersion(content, context.lastRelease.version, context.nextRelease.version);
+          break;
+        case FILE_TYPE_CONTAINERFILE:
+          content = updateContainerfile(content, file.label, context);
           break;
       }
 
