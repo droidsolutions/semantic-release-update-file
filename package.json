@@ -108,6 +108,11 @@
     "require": [
       "ts-node/register",
       "source-map-support/register"
+    ],
+    "watchExtensions": ".ts",
+    "watchFiles": [
+      "src/**/*",
+      "test/**/*"
     ]
   },
   "nyc": {
