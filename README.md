@@ -145,6 +145,14 @@ You should specify `my.registry.com/some/image` as image in the configuration. A
 
 This is escpecially helpful if you build and publish the container image as part of another Semantic Release plugin and you want to deploy it in a later step of the CI pipeline.
 
+#### exactMatch
+
+Only required if the type is `k8s`. This plugin completely replaces the image tag with the new version. This can be problematic if you have a suffix on the tag like `-alpine`. For this the `exactMatch` option exists. If you specify `exactMatch: true` only the old version string is replaced with the new one.
+
+For example if your last git tag is `v1.0.0` the version (without leading v) is replaced with the new version. This way any tag suffixes should remain. For example `my.registry.com/some/image:v1.0.0-alpine` would become `my.registry.com/some/image:v1.1.0-alpine`.
+
+**Warniing::** For this to work, it is required that the version in the yaml file matches the one Semantic Release determined as the old version which is the Git tag unless it is the first release.
+
 #### replacements
 
 Only required if type is `xml`. You can specify an array of key/value pairs that should be updated in the XML file. With this you can for example update the version and commit tags in a C# project file to for NuGet packages. For example consider the following .csproj file:

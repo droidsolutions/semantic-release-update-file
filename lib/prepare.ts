@@ -55,12 +55,16 @@ export const prepare = async (
 
       switch (file.type) {
         case FILE_TYPE_K8S:
-          if (!Array.isArray(file.image)) {
-            file.image = [file.image];
-          }
+          {
+            if (!Array.isArray(file.image)) {
+              file.image = [file.image];
+            }
 
-          for (const image of file.image) {
-            content = updateK8sYaml(content, image, context.nextRelease.version);
+            const oldVersion = file.exactMatch ? context.lastRelease.version : undefined;
+
+            for (const image of file.image) {
+              content = updateK8sYaml(content, image, context.nextRelease.version, oldVersion);
+            }
           }
           break;
         case FILE_TYPE_XML:

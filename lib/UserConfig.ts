@@ -27,6 +27,8 @@ export interface K8sFileSpec extends FileSpec {
   type: typeof FILE_TYPE_K8S;
   /** The name of the image to update in the manifest. */
   image: string | string[];
+  /** If true, the exact version is replaced. */
+  exactMatch?: boolean;
 }
 
 /** An XML file. */

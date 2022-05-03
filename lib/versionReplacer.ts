@@ -7,12 +7,19 @@ import { XmlReplacement } from "./UserConfig";
  *
  * @param {string} yamlContent The content of the yaml file.
  * @param {string} imageName The name of the docker image whose version should be replaced.
+ * @param {string} oldVersion The old version number.
  * @param {string} newVersion The new version number.
  * @returns {string} The updated yaml file content.
  * @throws {Error} When the old version of the image could not be matched in the existing yaml content.
  */
-export const updateK8sYaml = (yamlContent: string, imageName: string, newVersion: string): string => {
-  const regexString = `image:\\s+${escapeRegExp(imageName)}:v?(.*)`;
+export const updateK8sYaml = (
+  yamlContent: string,
+  imageName: string,
+  newVersion: string,
+  oldVersion?: string,
+): string => {
+  const lastVersion = oldVersion ? oldVersion : ".*";
+  const regexString = `image:\\s+${escapeRegExp(imageName)}:v?(${lastVersion})`;
   const match = yamlContent.match(regexString);
 
   if (match === null) {

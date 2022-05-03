@@ -11,7 +11,10 @@ chai.use(chaiAsPromised);
 
 describe("prepare", function () {
   let context: Context;
-  let updateK8sYamlStub: sinon.SinonStub<[yamlContent: string, imageName: string, newVersion: string], string>;
+  let updateK8sYamlStub: sinon.SinonStub<
+    [yamlContent: string, imageName: string, newVersion: string, oldVersion?: string],
+    string
+  >;
   let updateXmlStub: sinon.SinonStub<
     [
       content: string,
@@ -178,8 +181,14 @@ describe("prepare", function () {
       customContext,
     );
 
-    expect(updateK8sYamlStub.calledOnceWithExactly(k8sFile.content, k8sFile.image, context.nextRelease!.version)).to.be
-      .true;
+    expect(
+      updateK8sYamlStub.calledOnceWithExactly(
+        k8sFile.content,
+        k8sFile.image,
+        context.nextRelease?.version as string,
+        undefined,
+      ),
+    ).to.be.true;
     expect(
       updatePubspecStub.calledOnceWithExactly(
         pubspecFile.content,

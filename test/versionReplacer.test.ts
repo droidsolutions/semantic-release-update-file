@@ -28,9 +28,53 @@ spec:
       chai.expect(actual).to.equal(expected);
     });
 
+    it("should replace container image version with suffix", function () {
+      const content = `apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - image: my.registry.com/some/image:v2.8.2-alpine
+          name: identity-provider`;
+      const actual = updateK8sYaml(content, "my.registry.com/some/image", "3.0.0", "2.8.2");
+
+      const expected = `apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - image: my.registry.com/some/image:v3.0.0-alpine
+          name: identity-provider`;
+      chai.expect(actual).to.equal(expected);
+    });
+
+    it("should replace container image version with version suffix", function () {
+      const content = `apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - image: my.registry.com/some/image:v4.0.0-beta.1-alpine
+          name: identity-provider`;
+      const actual = updateK8sYaml(content, "my.registry.com/some/image", "4.0.0-beta.2", "4.0.0-beta.1");
+
+      const expected = `apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - image: my.registry.com/some/image:v4.0.0-beta.2-alpine
+          name: identity-provider`;
+      chai.expect(actual).to.equal(expected);
+    });
+
     it("should throw an error if image could not be matched", function () {
       chai
-        .expect(() => updateK8sYaml(sampleContent, "my.registry.com/some/other", "3.0.0"))
+        .expect(() => updateK8sYaml(sampleContent, "my.registry.com/some/other", "2.8.2", "3.0.0"))
         .to.throw("Unable to match image and old version in yaml file.");
     });
   });
