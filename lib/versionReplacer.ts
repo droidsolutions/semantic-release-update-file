@@ -19,14 +19,22 @@ export const updateK8sYaml = (
   oldVersion?: string,
 ): string => {
   const lastVersion = oldVersion ? oldVersion : ".*";
-  const regexString = `image:\\s+${escapeRegExp(imageName)}:v?(${lastVersion})`;
-  const match = yamlContent.match(regexString);
+  const regex = new RegExp(`image:\\s+${escapeRegExp(imageName)}:v?(${lastVersion})`, "gm");
+  let match = regex.exec(yamlContent);
 
   if (match === null) {
     throw new Error("Unable to match image and old version in yaml file.");
   }
 
-  return yamlContent.replace(match[0], match[0].replace(match[1], newVersion));
+  // Todo use Replace all once support for Node 14 is dropped
+  // return yamlContent.replaceAll(match[0], match[0].replace(match[1], newVersion));
+  let result = yamlContent;
+  while (match !== null) {
+    result = result.replace(match[0], match[0].replace(match[1], newVersion));
+    match = regex.exec(result);
+  }
+
+  return result;
 };
 
 /**

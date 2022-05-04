@@ -72,6 +72,46 @@ spec:
       chai.expect(actual).to.equal(expected);
     });
 
+    it("should replace all container image occurences", function () {
+      const content = `apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - image: my.registry.com/some/image:v2.0.0-api
+          name: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - image: my.registry.com/some/image:v2.0.0-worker
+          name: worker`;
+      const actual = updateK8sYaml(content, "my.registry.com/some/image", "2.1.0", "2.0.0");
+
+      const expected = `apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - image: my.registry.com/some/image:v2.1.0-api
+          name: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - image: my.registry.com/some/image:v2.1.0-worker
+          name: worker`;
+      chai.expect(actual).to.equal(expected);
+    });
+
     it("should throw an error if image could not be matched", function () {
       chai
         .expect(() => updateK8sYaml(sampleContent, "my.registry.com/some/other", "2.8.2", "3.0.0"))
