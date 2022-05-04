@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.1.0...v1.2.0) (2022-05-04)
+
+
+### Features
+
+* **yaml:** update all occurences in given yaml ([2212341](https://github.com/droidsolutions/semantic-release-update-file/commit/221234167f5703fcd04684e48d76597d1e21176f))
+
 # [1.1.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.0.3...v1.1.0) (2022-05-03)
 
 
