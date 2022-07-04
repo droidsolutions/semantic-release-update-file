@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import chai from "chai";
 import { Context } from "semantic-release";
 import Sinon, { SinonSpy } from "sinon";
