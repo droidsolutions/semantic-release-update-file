@@ -184,7 +184,7 @@ dev_dependencies:
         logger: {
           error: Sinon.spy() as any,
           log: Sinon.spy() as any,
-        },
+        } as any,
         env: {
           CI_COMMIT_SHA: "997f96fd00c3898141b7fc10b1d53ba476a41017",
         },
@@ -258,7 +258,7 @@ WORKDIR /source`;
         logger: {
           error: Sinon.spy() as any,
           log: Sinon.spy() as any,
-        },
+        } as any,
         env: {
           CI_COMMIT_SHA: "8d019d592c357f5db71cd585aacd39222e71a21e",
         },
