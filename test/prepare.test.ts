@@ -32,7 +32,10 @@ describe("prepare", function () {
   before(function () {
     context = {
       env: {},
-      logger: { error: (_msg, ..._args) => undefined, log: (_msg, ..._args) => undefined },
+      logger: {
+        error: (_msg: string, ..._args: any[]) => undefined,
+        log: (_msg: string, ..._args: any[]) => undefined,
+      } as any,
       lastRelease: {
         version: "v1.0.0",
         gitHead: "a",
@@ -45,7 +48,7 @@ describe("prepare", function () {
         type: "minor",
         version: "v1.1.0",
       },
-    };
+    } as Context;
 
     updateK8sYamlStub = sinon.stub(versionReplacer, "updateK8sYaml");
     updateXmlStub = sinon.stub(versionReplacer, "updateXml");
