@@ -169,6 +169,49 @@ dev_dependencies:
         .expect(() => updatePubspecVersion(sampleContent, "0.8.0", "1.0.0"))
         .to.throw("Could not match old version in pubspec.yaml.");
     });
+    it("should increment build number if present", function () {
+      const sampleContentWithBuildNumber = `name: some-module
+      description: Some plugin for Flutter apps
+      version: 0.9.0+1
+      author: Stefan Ißmer <stefan.issmer@droidsolutions.de>
+      homepage: https://somewhere.on/line
+      
+      environment:
+        sdk: ">=2.2.0 <3.0.0"
+      
+      dependencies:
+        flutter:
+          sdk: flutter
+        http: ^0.12.0+2
+      
+      dev_dependencies:
+        flutter_test:
+          sdk: flutter
+        mockito: ^4.1.1`;
+
+      const actual = updatePubspecVersion(sampleContentWithBuildNumber, "0.9.0", "1.0.0");
+
+      const expected = `name: some-module
+      description: Some plugin for Flutter apps
+      version: 1.0.0+2
+      author: Stefan Ißmer <stefan.issmer@droidsolutions.de>
+      homepage: https://somewhere.on/line
+      
+      environment:
+        sdk: ">=2.2.0 <3.0.0"
+      
+      dependencies:
+        flutter:
+          sdk: flutter
+        http: ^0.12.0+2
+      
+      dev_dependencies:
+        flutter_test:
+          sdk: flutter
+        mockito: ^4.1.1`;
+
+      chai.expect(actual).to.equal(expected);
+    });
   });
 
   context("updateXml", function () {
