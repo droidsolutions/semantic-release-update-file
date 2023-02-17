@@ -47,7 +47,7 @@ export const updateK8sYaml = (
  * @throws {Error} When the old version could not be found in the pubspec.yaml file content.
  */
 export const updatePubspecVersion = (pubspecContent: string, oldVersion: string, newVersion: string): string => {
-  const regex = `version:\\s+(${oldVersion})`;
+  const regex = `version:\\s+(${oldVersion})(?:(?:\\+)(\\d+))?`;
 
   const match = pubspecContent.match(regex);
 
@@ -55,8 +55,19 @@ export const updatePubspecVersion = (pubspecContent: string, oldVersion: string,
     throw new Error("Could not match old version in pubspec.yaml.");
   }
 
-  return pubspecContent.replace(match[0], match[0].replace(match[1], newVersion));
+  let versionString = match[0].replace(match[1], newVersion);
+
+  if (hasBuildNumber(versionString)) {
+    versionString = incrementBuildNumber(versionString, match[2]);
+  }
+
+  return pubspecContent.replace(match[0], versionString);
 };
+
+const hasBuildNumber = (versionString: string) => versionString.includes("+");
+
+const incrementBuildNumber = (versionString: string, oldBuildNumber: string) =>
+  versionString.replace(`+${oldBuildNumber}`, `+${(parseInt(oldBuildNumber) + 1).toString()}`);
 
 /**
  * Updates given replacements in XML file content.
