@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.2.0...v1.3.0) (2023-02-17)
+
+
+### Bug Fixes
+
+* **Pubspec:** increment build numbers greater than 9 ([9c9887d](https://github.com/droidsolutions/semantic-release-update-file/commit/9c9887d0380def5f0e5ed3ce3635be8661af2090))
+
+
+### Features
+
+* increment Flutter app build number along with its version ([0748a55](https://github.com/droidsolutions/semantic-release-update-file/commit/0748a55e70b1086a0e2a853dcd13c7c6d6167b25))
+
 # [1.2.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.1.0...v1.2.0) (2022-05-04)
 
 
