@@ -28,6 +28,8 @@ describe("prepare", function () {
   >;
   let updatePubspecStub: sinon.SinonStub<[pubspecContent: string, oldVersion: string, newVersion: string], string>;
   let updateContainerfileStub: sinon.SinonStub<[containerContent: string, label: string, context: Context], string>;
+  let readFileStub: sinon.SinonStub;
+  let writeFileStub: sinon.SinonStub;
 
   before(function () {
     context = {
@@ -61,6 +63,8 @@ describe("prepare", function () {
     updateXmlStub.reset();
     updatePubspecStub.reset();
     updateContainerfileStub.reset();
+    readFileStub?.restore();
+    writeFileStub?.restore();
   });
 
   after(function () {
@@ -68,6 +72,8 @@ describe("prepare", function () {
     updateXmlStub.restore();
     updatePubspecStub.restore();
     updateContainerfileStub.restore();
+    readFileStub?.restore();
+    writeFileStub?.restore();
   });
 
   it("should throw an Error if nextRelease is missing", async function () {
@@ -156,13 +162,13 @@ describe("prepare", function () {
     updatePubspecStub.returns(pubspecFile.newContent);
     updateContainerfileStub.returns(containerFile.newContent);
 
-    const readFileStub = sinon.stub(fs.promises, "readFile");
+    readFileStub = sinon.stub(fs.promises, "readFile");
     readFileStub.withArgs(k8sFile.path).resolves(k8sFile.content);
     readFileStub.withArgs(pubspecFile.path).resolves(pubspecFile.content);
     readFileStub.withArgs(xmlFile.path).resolves(xmlFile.content);
     readFileStub.withArgs(containerFile.path).resolves(containerFile.content);
 
-    const writeFileStub = sinon.stub(fs.promises, "writeFile");
+    writeFileStub = sinon.stub(fs.promises, "writeFile");
     writeFileStub.withArgs(k8sFile.path, k8sFile.newContent).resolves(undefined);
     writeFileStub.withArgs(pubspecFile.path, pubspecFile.newContent).resolves(undefined);
     writeFileStub.withArgs(xmlFile.path, xmlFile.newContent).resolves(undefined);
