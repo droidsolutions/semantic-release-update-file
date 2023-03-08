@@ -47,7 +47,10 @@ export const updateK8sYaml = (
  * @throws {Error} When the old version could not be found in the pubspec.yaml file content.
  */
 export const updatePubspecVersion = (pubspecContent: string, oldVersion: string, newVersion: string): string => {
-  const regex = `version:\\s+(${oldVersion})(?:(?:\\+)(\\d+))?`;
+  let regex = `version:\\s+(${oldVersion})(?:(?:\\+)(\\d+))?`;
+  if (oldVersion === undefined) {
+    regex = "version:\\s+([\\d.]+)(?:(?:\\+)(\\d+))?";
+  }
 
   const match = pubspecContent.match(regex);
 
