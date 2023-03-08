@@ -15,6 +15,7 @@ jobs:
         run: npm ci --no-fund
       - name: Run ESLint
         run: npx eslint --ext .js,.ts .
+
   build:
     name: Transpile TypeScript
     runs-on: ubuntu-latest
@@ -33,6 +34,25 @@ jobs:
           path: |
             dist
             !dist/test
+
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
   test:
     name: Coverage with Node ${{ matrix.node }}
     runs-on: ubuntu-latest
@@ -50,6 +70,7 @@ jobs:
         run: npm ci --no-fund
       - name: Collect coverage
         run: npm run coverage
+
   release:
     name: Semantic Release
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
