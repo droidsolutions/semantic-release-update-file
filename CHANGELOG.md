@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.3.0...v1.3.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* allow pubspec update for first release ([d2477a1](https://github.com/droidsolutions/semantic-release-update-file/commit/d2477a1aeb3995596decc0ba1d326cb57b2331e7))
+
 # [1.3.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.2.0...v1.3.0) (2023-02-17)
 
 
