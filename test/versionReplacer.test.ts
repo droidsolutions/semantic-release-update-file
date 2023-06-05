@@ -171,8 +171,7 @@ dev_dependencies:
     });
 
     it("should set first version in pubspec.yaml (first release)", function () {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const actual = updatePubspecVersion(sampleContent, undefined!, "1.0.0");
+      const actual = updatePubspecVersion(sampleContent, undefined, "1.0.0");
 
       const expected = `name: some-module
 description: Some plugin for Flutter apps
@@ -235,6 +234,22 @@ dev_dependencies:
         flutter_test:
           sdk: flutter
         mockito: ^4.1.1`;
+
+      chai.expect(actual).to.equal(expected);
+    });
+
+    it("should replace prerelease version", function () {
+      const sampleContentWithPrerelease = `name: some-module
+      description: Some plugin for Flutter apps
+      version: 0.9.0-develop.1
+      homepage: https://somewhere.on/line`;
+
+      const actual = updatePubspecVersion(sampleContentWithPrerelease, undefined, "1.0.0-develop.2");
+
+      const expected = `name: some-module
+      description: Some plugin for Flutter apps
+      version: 1.0.0-develop.2
+      homepage: https://somewhere.on/line`;
 
       chai.expect(actual).to.equal(expected);
     });

@@ -41,15 +41,19 @@ export const updateK8sYaml = (
  * Updates the version in the pubspec.yaml file for Flutter plugins.
  *
  * @param {string} pubspecContent The content of the pubspec.yaml file.
- * @param {string} oldVersion The old version.
+ * @param {string | undefined} oldVersion The old version, undefined if it is the first release.
  * @param {string} newVersion The new version.
  * @returns {string} The updqated file content.
  * @throws {Error} When the old version could not be found in the pubspec.yaml file content.
  */
-export const updatePubspecVersion = (pubspecContent: string, oldVersion: string, newVersion: string): string => {
+export const updatePubspecVersion = (
+  pubspecContent: string,
+  oldVersion: string | undefined,
+  newVersion: string,
+): string => {
   let regex = `version:\\s+(${oldVersion})(?:(?:\\+)(\\d+))?`;
   if (oldVersion === undefined) {
-    regex = "version:\\s+([\\d.]+)(?:(?:\\+)(\\d+))?";
+    regex = "version:\\s+(([\\d.]+)([\\+\\-](\\w+.)?(\\d+))?)";
   }
 
   const match = pubspecContent.match(regex);

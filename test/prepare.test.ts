@@ -26,7 +26,10 @@ describe("prepare", function () {
     ],
     string
   >;
-  let updatePubspecStub: sinon.SinonStub<[pubspecContent: string, oldVersion: string, newVersion: string], string>;
+  let updatePubspecStub: sinon.SinonStub<
+    [pubspecContent: string, oldVersion: string | undefined, newVersion: string],
+    string
+  >;
   let updateContainerfileStub: sinon.SinonStub<[containerContent: string, label: string, context: Context], string>;
   let readFileStub: sinon.SinonStub;
   let writeFileStub: sinon.SinonStub;
