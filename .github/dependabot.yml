@@ -1,19 +1,26 @@
+---
 version: 2
 updates:
-- package-ecosystem: github-actions
-  directory: "/"
-  schedule:
-    interval: weekly
-    time: "04:00"
-  assignees:
-    - "kampfmoehre"
-  open-pull-requests-limit: 10
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: daily
-    time: "04:00"
-  assignees:
-    - "kampfmoehre"
-  open-pull-requests-limit: 10
-  
+  - directory: "/"
+    package-ecosystem: github-actions
+    open-pull-requests-limit: 10
+    schedule:
+      interval: weekly
+      time: "04:00"
+    assignees:
+      - "kampfmoehre"
+  - directory: "/"
+    groups:
+      commitlint:
+        patterns:
+          - "@commitlint/*"
+      typescript-eslint:
+        patterns:
+          - "@typescript-eslint/*"
+    open-pull-requests-limit: 10
+    package-ecosystem: npm
+    schedule:
+      interval: daily
+      time: "04:00"
+    assignees:
+      - "kampfmoehre"
