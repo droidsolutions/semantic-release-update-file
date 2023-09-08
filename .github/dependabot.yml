@@ -11,6 +11,12 @@ updates:
       - "kampfmoehre"
   - directory: "/"
     groups:
+      chai:
+        patterns:
+          - "chai"
+          - "chai-as-promised"
+          - "@types/chai"
+          - "@types/chai-as-promised"
       commitlint:
         patterns:
           - "@commitlint/*"
