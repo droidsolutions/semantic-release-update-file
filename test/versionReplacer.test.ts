@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import chai from "chai";
-import { Context } from "semantic-release";
+import { PrepareContext } from "semantic-release";
 import Sinon, { SinonSpy } from "sinon";
 import { updateContainerfile, updateK8sYaml, updatePubspecVersion, updateXml } from "../lib/versionReplacer";
 
@@ -256,7 +256,7 @@ dev_dependencies:
   });
 
   context("updateXml", function () {
-    let context: Context & { branch: { name: string } };
+    let context: PrepareContext;
     const sampleContent = `<PropertyGroup>
   <RepositoryBranch>dev</RepositoryBranch>
   <RepositoryCommit></RepositoryCommit>
@@ -264,7 +264,7 @@ dev_dependencies:
 </PropertyGroup>`;
     before(function () {
       context = {
-        nextRelease: { version: "1.0.0", gitHead: "", gitTag: "", notes: "", type: "minor" },
+        nextRelease: { version: "1.0.0", gitHead: "", gitTag: "", notes: "", type: "minor", channel: "", name: "" },
         logger: {
           error: Sinon.spy() as any,
           log: Sinon.spy() as any,
@@ -273,7 +273,7 @@ dev_dependencies:
           CI_COMMIT_SHA: "997f96fd00c3898141b7fc10b1d53ba476a41017",
         },
         branch: { name: "master" },
-      };
+      } as unknown as PrepareContext;
     });
 
     it("should set content of XML tag", function () {
@@ -322,7 +322,7 @@ dev_dependencies:
   });
 
   context("updateContainerfile", function () {
-    let context: Context & { branch: { name: string } };
+    let context: PrepareContext;
     const sampleContent = `FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
 
 LABEL maintainer="Stefan Ißmer | DroidSolutions GmbH <stefan.issmer@droidsolutions.de"
@@ -338,6 +338,8 @@ WORKDIR /source`;
           gitTag: "v1.2.0",
           notes: "",
           type: "minor",
+          name: "",
+          channel: "",
         },
         logger: {
           error: Sinon.spy() as any,
@@ -347,7 +349,7 @@ WORKDIR /source`;
           CI_COMMIT_SHA: "8d019d592c357f5db71cd585aacd39222e71a21e",
         },
         branch: { name: "master" },
-      };
+      } as unknown as PrepareContext;
     });
 
     it("should replace version label", function () {

@@ -2,7 +2,7 @@
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import fs from "fs";
-import { Context } from "semantic-release";
+import { PrepareContext } from "semantic-release";
 import sinon from "sinon";
 import { prepare } from "../lib/prepare";
 import { XmlReplacement } from "../lib/UserConfig";
@@ -11,26 +11,23 @@ import * as versionReplacer from "../lib/versionReplacer";
 chai.use(chaiAsPromised);
 
 describe("prepare", function () {
-  let context: Context;
+  let context: PrepareContext;
   let updateK8sYamlStub: sinon.SinonStub<
     [yamlContent: string, imageName: string, newVersion: string, oldVersion?: string],
     string
   >;
   let updateXmlStub: sinon.SinonStub<
-    [
-      content: string,
-      replacements: XmlReplacement[],
-      context: Context & {
-        branch: { name: string };
-      },
-    ],
+    [content: string, replacements: XmlReplacement[], context: PrepareContext],
     string
   >;
   let updatePubspecStub: sinon.SinonStub<
     [pubspecContent: string, oldVersion: string | undefined, newVersion: string],
     string
   >;
-  let updateContainerfileStub: sinon.SinonStub<[containerContent: string, label: string, context: Context], string>;
+  let updateContainerfileStub: sinon.SinonStub<
+    [containerContent: string, label: string, context: PrepareContext],
+    string
+  >;
   let readFileStub: sinon.SinonStub;
   let writeFileStub: sinon.SinonStub;
 
@@ -53,7 +50,7 @@ describe("prepare", function () {
         type: "minor",
         version: "v1.1.0",
       },
-    } as Context;
+    } as PrepareContext;
 
     updateK8sYamlStub = sinon.stub(versionReplacer, "updateK8sYaml");
     updateXmlStub = sinon.stub(versionReplacer, "updateXml");
@@ -90,12 +87,15 @@ describe("prepare", function () {
   it("should throw an Error if lastRelease is missing", async function () {
     await chai
       .expect(
-        prepare({} as any, {
-          nextRelease: context.nextRelease,
-          env: context.env,
-          logger: context.logger,
-          branch: { name: "main" },
-        }),
+        prepare(
+          {} as any,
+          {
+            nextRelease: context.nextRelease,
+            env: context.env,
+            logger: context.logger,
+            branch: { name: "main" },
+          } as PrepareContext,
+        ),
       )
       .to.be.rejectedWith(
         "Unable to update file contents because Semantic Release context has no release information.",
@@ -109,7 +109,7 @@ describe("prepare", function () {
           {
             files: [{ type: "k8s", branches: ["master"], image: "a", path: "b" }],
           },
-          context as Context & { branch: { name: string } },
+          context as PrepareContext,
         ),
       )
       .to.be.rejectedWith("Unable to check branch because Semantic Release context has no branch information.");
@@ -125,7 +125,7 @@ describe("prepare", function () {
           {
             ...context,
             branch: {},
-          } as Context & { branch: { name: string } },
+          } as PrepareContext,
         ),
       )
       .to.be.rejectedWith("Unable to check branch because Semantic Release context has no branch information.");
