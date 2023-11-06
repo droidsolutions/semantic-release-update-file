@@ -1,5 +1,5 @@
 import template from "lodash.template";
-import { Context } from "semantic-release";
+import { PrepareContext } from "semantic-release";
 import { XmlReplacement } from "./UserConfig";
 
 /**
@@ -83,11 +83,7 @@ const incrementBuildNumber = (versionString: string, oldBuildNumber: string) =>
  * @param {Array.<{key: string, value: string}>} replacements The replacement values.
  * @param {object} context The
  */
-export const updateXml = (
-  content: string,
-  replacements: XmlReplacement[],
-  context: Context & { branch: { name: string } },
-): string => {
+export const updateXml = (content: string, replacements: XmlReplacement[], context: PrepareContext): string => {
   let result = content;
   for (const replacement of replacements) {
     const regex = `(<${replacement.key}>(.*)</${replacement.key}>)`;
@@ -120,7 +116,7 @@ export const updateXml = (
  * @param context The semantic release context.
  * @returns The given content with the value of the given label replaced with the new version number.
  */
-export const updateContainerfile = (content: string, label: string, context: Context): string => {
+export const updateContainerfile = (content: string, label: string, context: PrepareContext): string => {
   const regex = new RegExp(`^LABEL\\s+${label}=\\"v?(.*)\\"$`, "m");
   const match = content.match(regex);
 

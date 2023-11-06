@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "fs/promises";
-import { Config, Context } from "semantic-release";
+import { Config, PrepareContext } from "semantic-release";
 import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "./supportedFileTypes";
 import { UserConfig } from "./UserConfig";
 import { updateK8sYaml, updateXml, updatePubspecVersion, updateContainerfile } from "./versionReplacer";
@@ -10,10 +10,7 @@ import { updateK8sYaml, updateXml, updatePubspecVersion, updateContainerfile } f
  * @param pluginConfig The Semantic Release configuration including the plugin configuration.
  * @param context The Semantic Release context.
  */
-export const prepare = async (
-  pluginConfig: Config & UserConfig,
-  context: Context & { branch: { name: string } },
-): Promise<void> => {
+export const prepare = async (pluginConfig: Config & UserConfig, context: PrepareContext): Promise<void> => {
   if (!context.nextRelease || !context.lastRelease) {
     throw new Error("Unable to update file contents because Semantic Release context has no release information.");
   }
