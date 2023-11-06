@@ -54,7 +54,7 @@
     "@types/lodash.template": "^4.5.0",
     "@types/mocha": "^10.0.0",
     "@types/semantic-release": "^20.0.1",
-    "@types/sinon": "^10.0.0",
+    "@types/sinon": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
     "chai": "^4.3.4",
