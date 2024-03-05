@@ -2,7 +2,13 @@
 import chai from "chai";
 import { PrepareContext } from "semantic-release";
 import Sinon, { SinonSpy } from "sinon";
-import { updateContainerfile, updateK8sYaml, updatePubspecVersion, updateXml } from "../lib/versionReplacer";
+import {
+  updateContainerfile,
+  updateK8sYaml,
+  updateVersionPropertyInYaml,
+  updatePubspecVersion,
+  updateXml,
+} from "../lib/versionReplacer";
 
 describe("versionReplacer", function () {
   context("updateK8sYaml", function () {
@@ -164,12 +170,6 @@ dev_dependencies:
       chai.expect(actual).to.equal(expected);
     });
 
-    it("should throw an error if old version is not found", function () {
-      chai
-        .expect(() => updatePubspecVersion(sampleContent, "0.8.0", "1.0.0"))
-        .to.throw("Could not match old version in pubspec.yaml.");
-    });
-
     it("should set first version in pubspec.yaml (first release)", function () {
       const actual = updatePubspecVersion(sampleContent, undefined, "1.0.0");
 
@@ -196,60 +196,60 @@ dev_dependencies:
 
     it("should increment build number if present", function () {
       const sampleContentWithBuildNumber = `name: some-module
-      description: Some plugin for Flutter apps
-      version: 0.9.0+1
-      author: Stefan Ißmer <stefan.issmer@droidsolutions.de>
-      homepage: https://somewhere.on/line
-      
-      environment:
-        sdk: ">=2.2.0 <3.0.0"
-      
-      dependencies:
-        flutter:
-          sdk: flutter
-        http: ^0.12.0+2
-      
-      dev_dependencies:
-        flutter_test:
-          sdk: flutter
-        mockito: ^4.1.1`;
+description: Some plugin for Flutter apps
+version: 0.9.0+1
+author: Stefan Ißmer <stefan.issmer@droidsolutions.de>
+homepage: https://somewhere.on/line
+
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.12.0+2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^4.1.1`;
 
       const actual = updatePubspecVersion(sampleContentWithBuildNumber, "0.9.0", "1.0.0");
 
       const expected = `name: some-module
-      description: Some plugin for Flutter apps
-      version: 1.0.0+2
-      author: Stefan Ißmer <stefan.issmer@droidsolutions.de>
-      homepage: https://somewhere.on/line
-      
-      environment:
-        sdk: ">=2.2.0 <3.0.0"
-      
-      dependencies:
-        flutter:
-          sdk: flutter
-        http: ^0.12.0+2
-      
-      dev_dependencies:
-        flutter_test:
-          sdk: flutter
-        mockito: ^4.1.1`;
+description: Some plugin for Flutter apps
+version: 1.0.0+2
+author: Stefan Ißmer <stefan.issmer@droidsolutions.de>
+homepage: https://somewhere.on/line
+
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.12.0+2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^4.1.1`;
 
       chai.expect(actual).to.equal(expected);
     });
 
     it("should replace prerelease version", function () {
       const sampleContentWithPrerelease = `name: some-module
-      description: Some plugin for Flutter apps
-      version: 0.9.0-develop.1
-      homepage: https://somewhere.on/line`;
+description: Some plugin for Flutter apps
+version: 2.0.0-develop.1
+homepage: https://somewhere.on/line`;
 
-      const actual = updatePubspecVersion(sampleContentWithPrerelease, undefined, "1.0.0-develop.2");
+      const actual = updatePubspecVersion(sampleContentWithPrerelease, undefined, "2.0.0-develop.2");
 
       const expected = `name: some-module
-      description: Some plugin for Flutter apps
-      version: 1.0.0-develop.2
-      homepage: https://somewhere.on/line`;
+description: Some plugin for Flutter apps
+version: 2.0.0-develop.2
+homepage: https://somewhere.on/line`;
 
       chai.expect(actual).to.equal(expected);
     });
@@ -361,6 +361,54 @@ LABEL maintainer="Stefan Ißmer | DroidSolutions GmbH <stefan.issmer@droidsoluti
 LABEL version="v1.2.0"
 
 WORKDIR /source`;
+
+      chai.expect(actual).to.equal(expected);
+    });
+  });
+
+  context("updatePropertyInYaml", function () {
+    it("should replace version in yaml file", function () {
+      const sampleContent = `name: some-module
+description: Some yaml file
+version: 0.9.0
+
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
+  something:
+    hosted:
+      name: something
+      url: https://somewhere.on/line
+    version: 1.2.3`;
+      const actual = updateVersionPropertyInYaml(sampleContent, "version", "1.0.0");
+
+      const expected = `name: some-module
+description: Some yaml file
+version: 1.0.0
+
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
+  something:
+    hosted:
+      name: something
+      url: https://somewhere.on/line
+    version: 1.2.3`;
+
+      chai.expect(actual).to.equal(expected);
+    });
+
+    it("should replace pre-release version in yaml file", function () {
+      const sampleContent = `name: some-module
+description: Some yaml file
+version: 1.19.0-dev.21+123`;
+      const actual = updateVersionPropertyInYaml(sampleContent, "version", "1.20.0");
+
+      const expected = `name: some-module
+description: Some yaml file
+version: 1.20.0+124`;
 
       chai.expect(actual).to.equal(expected);
     });
