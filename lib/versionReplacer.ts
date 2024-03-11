@@ -38,6 +38,32 @@ export const updateK8sYaml = (
 };
 
 /**
+ * Replaces the value of a property in the given file content. This only works for root level properties.
+ * @param yamlContent The content of the file.
+ * @param propertyName The name of the property.
+ * @param newValue The new version to set.
+ * @returns The new content of the file.
+ */
+export const updateVersionPropertyInYaml = (yamlContent: string, propertyName: string, newValue: string): string => {
+  const regex = new RegExp(
+    `^(?<prop>${propertyName}):\\s(?<version>(?<mainversion>(\\d+)\\.(\\d+)\\.(\\d+)-?([a-zA-Z-\\d\\.]*))\\+?(?<build>[a-zA-Z-\\d\\.]*))$`,
+    "gm",
+  );
+  const match = regex.exec(yamlContent);
+
+  if (match === null || match.groups === undefined) {
+    throw new Error(`Unable to match property ${propertyName} in yaml file.`);
+  }
+
+  let versionString = newValue;
+  if (match.groups["build"] && parseInt(match.groups["build"]) > 0) {
+    versionString = `${newValue}+${parseInt(match.groups["build"]) + 1}`;
+  }
+
+  return yamlContent.replace(match.groups["version"], versionString);
+};
+
+/**
  * Updates the version in the pubspec.yaml file for Flutter plugins.
  *
  * @param {string} pubspecContent The content of the pubspec.yaml file.
@@ -51,30 +77,8 @@ export const updatePubspecVersion = (
   oldVersion: string | undefined,
   newVersion: string,
 ): string => {
-  let regex = `version:\\s+(${oldVersion})(?:(?:\\+)(\\d+))?`;
-  if (oldVersion === undefined) {
-    regex = "version:\\s+(([\\d.]+)([\\+\\-](\\w+.)?(\\d+))?)";
-  }
-
-  const match = pubspecContent.match(regex);
-
-  if (match === null) {
-    throw new Error("Could not match old version in pubspec.yaml.");
-  }
-
-  let versionString = match[0].replace(match[1], newVersion);
-
-  if (hasBuildNumber(versionString)) {
-    versionString = incrementBuildNumber(versionString, match[2]);
-  }
-
-  return pubspecContent.replace(match[0], versionString);
+  return updateVersionPropertyInYaml(pubspecContent, "version", newVersion);
 };
-
-const hasBuildNumber = (versionString: string) => versionString.includes("+");
-
-const incrementBuildNumber = (versionString: string, oldBuildNumber: string) =>
-  versionString.replace(`+${oldBuildNumber}`, `+${(parseInt(oldBuildNumber) + 1).toString()}`);
 
 /**
  * Updates given replacements in XML file content.
