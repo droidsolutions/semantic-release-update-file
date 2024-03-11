@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.3.2...v1.4.0) (2024-03-11)
+
+
+### Features
+
+* **Flutter:** allow to update versions without matching old version exactly ([3f37b4f](https://github.com/droidsolutions/semantic-release-update-file/commit/3f37b4f418c357def0f8eac40e49a680a2b8c6ae)), closes [#694](https://github.com/droidsolutions/semantic-release-update-file/issues/694)
+
 # [1.4.0-beta.1](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.3.2...v1.4.0-beta.1) (2024-03-05)
 
 

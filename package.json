@@ -1,6 +1,6 @@
 {
   "name": "@droidsolutions-oss/semantic-release-update-file",
-  "version": "1.4.0-beta.1",
+  "version": "1.4.0",
   "description": "Semantic Release plugin to help with updating files during release.",
   "main": "dist/index.js",
   "files": [
