@@ -21,7 +21,6 @@ module.exports = {
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double", { avoidEscape: true }],
     semi: ["error", "always"],
-    "@typescript-eslint/quotes": ["warn", "double", { allowTemplateLiterals: true, avoidEscape: true }],
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "prettier/prettier": "error",
     "node/no-unsupported-features/es-syntax": ["error", { ignores: ["modules"] }],
