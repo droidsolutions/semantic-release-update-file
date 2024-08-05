@@ -1,8 +1,8 @@
 import {
-  FILE_TYPE_CONTAINERFILE,
-  FILE_TYPE_FLUTTER,
-  FILE_TYPE_K8S,
-  FILE_TYPE_XML,
+  type FILE_TYPE_CONTAINERFILE,
+  type FILE_TYPE_FLUTTER,
+  type FILE_TYPE_K8S,
+  type FILE_TYPE_XML,
   SupportedFileTypes,
 } from "./supportedFileTypes";
 
