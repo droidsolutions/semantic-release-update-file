@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/dot-notation */
 import template from "lodash.template";
 import { PrepareContext } from "semantic-release";
 import { XmlReplacement } from "./UserConfig";
@@ -51,7 +54,7 @@ export const updateVersionPropertyInYaml = (yamlContent: string, propertyName: s
   );
   const match = regex.exec(yamlContent);
 
-  if (match === null || match.groups === undefined) {
+  if (match?.groups === undefined) {
     throw new Error(`Unable to match property ${propertyName} in yaml file.`);
   }
 
@@ -67,14 +70,14 @@ export const updateVersionPropertyInYaml = (yamlContent: string, propertyName: s
  * Updates the version in the pubspec.yaml file for Flutter plugins.
  *
  * @param {string} pubspecContent The content of the pubspec.yaml file.
- * @param {string | undefined} oldVersion The old version, undefined if it is the first release.
+ * @param {string | undefined} _oldVersion The old version, undefined if it is the first release.
  * @param {string} newVersion The new version.
  * @returns {string} The updqated file content.
  * @throws {Error} When the old version could not be found in the pubspec.yaml file content.
  */
 export const updatePubspecVersion = (
   pubspecContent: string,
-  oldVersion: string | undefined,
+  _oldVersion: string | undefined,
   newVersion: string,
 ): string => {
   return updateVersionPropertyInYaml(pubspecContent, "version", newVersion);
@@ -130,7 +133,7 @@ export const updateContainerfile = (content: string, label: string, context: Pre
     return content;
   }
 
-  return content.replace(match[0], match[0].replace(match[1], context.nextRelease?.version as string));
+  return content.replace(match[0], match[0].replace(match[1], context.nextRelease?.version));
 };
 
 /**

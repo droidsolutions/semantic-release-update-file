@@ -8,7 +8,7 @@
     "dist/lib/**/*.js"
   ],
   "engines": {
-    "node": ">= 14.0.0"
+    "node": ">= 14.13.1"
   },
   "publishConfig": {
     "access": "public"
@@ -16,7 +16,7 @@
   "scripts": {
     "coverage": "nyc mocha test/**/*.test.ts",
     "build": "tsc",
-    "lint": "eslint --ext ts .",
+    "lint": "eslint .",
     "test": "mocha test/**/*.test.ts"
   },
   "repository": {
@@ -46,6 +46,8 @@
   "devDependencies": {
     "@commitlint/cli": "^19.0.1",
     "@commitlint/config-conventional": "^19.0.0",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.8.0",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
     "@semantic-release/github": "11.0.1",
@@ -55,15 +57,16 @@
     "@types/lodash.template": "^4.5.0",
     "@types/mocha": "^10.0.0",
     "@types/sinon": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.1",
+    "@typescript-eslint/parser": "^8.0.1",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^8.19.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-mocha": "^10.0.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^5.0.0",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-mocha": "^10.5.0",
+    "eslint-plugin-n": "^17.10.2",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.9.0",
     "husky": "^9.0.1",
     "lint-staged": "^15.0.1",
     "mocha": "^10.0.0",
@@ -73,7 +76,8 @@
     "sinon": "^19.0.2",
     "source-map-support": "^0.5.19",
     "ts-node": "^10.0.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "typescript-eslint": "^8.13.0"
   },
   "lint-staged": {
     "*.{js,ts}": [
