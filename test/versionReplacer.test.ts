@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import chai from "chai";
 import { PrepareContext } from "semantic-release";
 import Sinon, { SinonSpy } from "sinon";
 import {
   updateContainerfile,
   updateK8sYaml,
-  updateVersionPropertyInYaml,
   updatePubspecVersion,
+  updateVersionPropertyInYaml,
   updateXml,
 } from "../lib/versionReplacer";
 

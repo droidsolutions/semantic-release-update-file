@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import fs from "fs";
@@ -199,7 +197,7 @@ describe("prepare", function () {
       updateK8sYamlStub.calledOnceWithExactly(
         k8sFile.content,
         k8sFile.image,
-        context.nextRelease?.version as string,
+        context.nextRelease?.version,
         undefined,
       ),
     ).to.be.true;

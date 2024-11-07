@@ -2,7 +2,7 @@ import { resolve } from "path";
 import semanticRelease from "semantic-release";
 import type { XmlFileSpec } from "../lib/UserConfig";
 
-(async () => {
+void (async () => {
   try {
     const pluginPath = resolve(process.cwd(), "dist/index.js");
     const result = await semanticRelease(

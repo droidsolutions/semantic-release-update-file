@@ -63,7 +63,6 @@ export const verify = async (pluginConfig: Config & UserConfig): Promise<void> =
         try {
           // check if we can read and write the file
           await access(filepath, fs.constants.R_OK | fs.constants.W_OK);
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (_) {
           errors.push(new Error(`No write access to the file "${filepath}".`));
         }

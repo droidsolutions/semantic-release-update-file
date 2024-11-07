@@ -35,7 +35,7 @@ export interface K8sFileSpec extends FileSpec {
 export interface XmlFileSpec extends FileSpec {
   type: typeof FILE_TYPE_XML;
   /** A list of XML tags to set new values for. */
-  replacements: Array<XmlReplacement>;
+  replacements: XmlReplacement[];
 }
 
 /** A pubspec.yaml file. */
@@ -51,4 +51,7 @@ export interface ContainerFileSpec extends FileSpec {
 }
 
 /** A key/value pair for XML file replacements. */
-export type XmlReplacement = { key: string; value: string };
+export interface XmlReplacement {
+  key: string;
+  value: string;
+}

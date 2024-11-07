@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { readFile, writeFile } from "fs/promises";
 import { Config, PrepareContext } from "semantic-release";
 import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "./supportedFileTypes";
@@ -22,7 +24,7 @@ export const prepare = async (pluginConfig: Config & UserConfig, context: Prepar
 
     // Check branch filter for files
     if (file.branches) {
-      if (!context.branch || !context.branch.name) {
+      if (!context.branch?.name) {
         throw new Error("Unable to check branch because Semantic Release context has no branch information.");
       }
 
