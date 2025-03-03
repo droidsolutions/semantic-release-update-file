@@ -21,7 +21,7 @@ export const updateK8sYaml = (
   newVersion: string,
   oldVersion?: string,
 ): string => {
-  const lastVersion = oldVersion ? oldVersion : ".*";
+  const lastVersion = oldVersion ?? ".*";
   const regex = new RegExp(`image:\\s+${escapeRegExp(imageName)}:v?(${lastVersion})`, "gm");
   let match = regex.exec(yamlContent);
 
