@@ -8,7 +8,7 @@ updates:
       interval: weekly
       time: "04:00"
     assignees:
-      - "kampfmoehre"
+      - "Kampfmoehre"
   - directory: "/"
     groups:
       chai:
