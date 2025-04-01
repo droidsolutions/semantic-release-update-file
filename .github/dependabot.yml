@@ -23,6 +23,7 @@ updates:
       typescript-eslint:
         patterns:
           - "@typescript-eslint/*"
+          - "typescript-eslint"
     open-pull-requests-limit: 10
     package-ecosystem: npm
     schedule:
