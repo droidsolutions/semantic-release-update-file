@@ -261,6 +261,7 @@ homepage: https://somewhere.on/line`;
   <RepositoryCommit></RepositoryCommit>
   <VersionPrefix>0.9.0</VersionPrefix>
 </PropertyGroup>`;
+
     before(function () {
       context = {
         nextRelease: { version: "1.0.0", gitHead: "", gitTag: "", notes: "", type: "minor", channel: "", name: "" },
