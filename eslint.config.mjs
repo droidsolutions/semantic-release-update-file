@@ -13,7 +13,7 @@ export default tseslint.config(
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   prettier,
-  mocha.configs.flat.recommended,
+  mocha.configs.recommended,
   {
     languageOptions: {
       ecmaVersion: 12,
