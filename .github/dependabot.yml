@@ -20,6 +20,10 @@ updates:
       commitlint:
         patterns:
           - "@commitlint/*"
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
       typescript-eslint:
         patterns:
           - "@typescript-eslint/*"
