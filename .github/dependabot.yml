@@ -23,7 +23,7 @@ updates:
       eslint:
         patterns:
           - "eslint"
-          - "@eslint/*"
+          - "@eslint/js"
       typescript-eslint:
         patterns:
           - "@typescript-eslint/*"
