@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/dot-notation */
 import template from "lodash.template";
-import { PrepareContext } from "semantic-release";
-import { XmlReplacement } from "./UserConfig";
+import type { PrepareContext } from "semantic-release";
+import type { XmlReplacement } from "./UserConfig.mjs";
 
 /**
  * Updates a Kubernetes deployment yaml file, by replacing the version of a docker image tag with a new version.

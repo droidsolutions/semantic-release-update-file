@@ -1,9 +1,14 @@
 import AggregateError from "aggregate-error";
-import chai from "chai";
+import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "../lib/supportedFileTypes";
-import { K8sFileSpec, UserConfig, XmlFileSpec } from "../lib/UserConfig";
-import { verify } from "../lib/verify";
+import {
+  FILE_TYPE_CONTAINERFILE,
+  FILE_TYPE_FLUTTER,
+  FILE_TYPE_K8S,
+  FILE_TYPE_XML,
+} from "../lib/supportedFileTypes.mjs";
+import type { K8sFileSpec, UserConfig, XmlFileSpec } from "../lib/UserConfig.mjs";
+import { verify } from "../lib/verify.mjs";
 
 chai.use(chaiAsPromised);
 

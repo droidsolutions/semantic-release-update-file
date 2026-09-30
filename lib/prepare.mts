@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { readFile, writeFile } from "fs/promises";
-import { Config, PrepareContext } from "semantic-release";
-import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "./supportedFileTypes";
-import { UserConfig } from "./UserConfig";
-import { updateK8sYaml, updateXml, updatePubspecVersion, updateContainerfile } from "./versionReplacer";
+import { readFile, writeFile } from "node:fs/promises";
+import type { Config, PrepareContext } from "semantic-release";
+import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_XML } from "./supportedFileTypes.mjs";
+import type { UserConfig } from "./UserConfig.mjs";
+import { updateContainerfile, updateK8sYaml, updatePubspecVersion, updateXml } from "./versionReplacer.mjs";
 
 /**
  * Executes the prepare step of the Semantic Release plugin.

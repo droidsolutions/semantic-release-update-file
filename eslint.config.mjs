@@ -25,7 +25,7 @@ export default tseslint.config(
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
-      sourceType: "commonjs",
+      sourceType: "module",
     },
 
     plugins: {

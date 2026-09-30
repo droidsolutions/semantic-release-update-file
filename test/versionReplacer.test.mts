@@ -1,13 +1,13 @@
-import chai from "chai";
-import { PrepareContext } from "semantic-release";
-import Sinon, { SinonSpy } from "sinon";
+import * as chai from "chai";
+import type { PrepareContext } from "semantic-release";
+import Sinon, { type SinonSpy } from "sinon";
 import {
   updateContainerfile,
   updateK8sYaml,
   updatePubspecVersion,
   updateVersionPropertyInYaml,
   updateXml,
-} from "../lib/versionReplacer";
+} from "../lib/versionReplacer.mjs";
 
 describe("versionReplacer", function () {
   context("updateK8sYaml", function () {

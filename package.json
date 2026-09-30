@@ -2,22 +2,24 @@
   "name": "@droidsolutions-oss/semantic-release-update-file",
   "version": "1.4.0",
   "description": "Semantic Release plugin to help with updating files during release.",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "dist/index.mjs",
   "files": [
-    "dist/index.js",
-    "dist/lib/**/*.js"
+    "CHANGELOG.md",
+    "dist/index.mjs",
+    "dist/lib/**/*.mjs"
   ],
   "engines": {
-    "node": ">= 14.13.1"
+    "node": "^22.14.0 || >= 24.10.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "coverage": "nyc mocha test/**/*.test.ts",
+    "coverage": "c8 mocha test/**/*.test.mts",
     "build": "tsc",
     "lint": "eslint .",
-    "test": "mocha test/**/*.test.ts"
+    "test": "mocha test/**/*.test.mts"
   },
   "repository": {
     "type": "git",
@@ -59,6 +61,7 @@
     "@types/sinon": "^22.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
+    "c8": "^12.0.0",
     "chai": "^6.2.2",
     "chai-as-promised": "^8.0.2",
     "eslint": "^10.0.2",
@@ -70,7 +73,6 @@
     "husky": "^9.0.1",
     "lint-staged": "^17.0.2",
     "mocha": "^11.0.1",
-    "nyc": "^18.0.0",
     "prettier": "^3.0.0",
     "semantic-release": "25.0.9",
     "sinon": "^22.0.0",
@@ -90,29 +92,16 @@
       "@commitlint/config-conventional"
     ]
   },
-  "mocha": {
-    "extension": [
-      ".ts",
-      ".js"
-    ],
-    "recursive": true,
-    "require": [
-      "ts-node/register",
-      "source-map-support/register"
-    ],
-    "watchExtensions": ".ts",
-    "watchFiles": [
-      "src/**/*",
-      "test/**/*"
-    ]
-  },
-  "nyc": {
+  "c8": {
     "all": true,
     "extension": [
-      ".ts"
+      ".mts"
     ],
     "include": [
-      "lib/**/*.ts"
+      "lib/**/*.mts"
+    ],
+    "exclude": [
+      "lib/UserConfig.mts"
     ],
     "reporter": [
       "html",

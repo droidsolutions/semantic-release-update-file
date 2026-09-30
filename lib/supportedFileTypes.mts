@@ -11,7 +11,4 @@ export const supportedFileTypes = [FILE_TYPE_FLUTTER, FILE_TYPE_K8S, FILE_TYPE_X
 
 /** A TypeScript type with supported file types. */
 export type SupportedFileTypes =
-  | typeof FILE_TYPE_K8S
-  | typeof FILE_TYPE_XML
-  | typeof FILE_TYPE_FLUTTER
-  | typeof FILE_TYPE_CONTAINERFILE;
+  typeof FILE_TYPE_K8S | typeof FILE_TYPE_XML | typeof FILE_TYPE_FLUTTER | typeof FILE_TYPE_CONTAINERFILE;
