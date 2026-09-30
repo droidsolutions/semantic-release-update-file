@@ -4,7 +4,7 @@ import type { XmlFileSpec } from "../lib/UserConfig.mjs";
 
 void (async () => {
   try {
-    const pluginPath = resolve(process.cwd(), "dist/index.js");
+    const pluginPath = resolve(process.cwd(), "dist/index.mjs");
     const result = await semanticRelease(
       {
         branches: ["master"],
