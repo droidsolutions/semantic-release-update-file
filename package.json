@@ -19,6 +19,7 @@
     "coverage": "c8 mocha test/**/*.test.mts",
     "build": "tsc",
     "lint": "eslint .",
+    "prepare": "husky",
     "test": "mocha test/**/*.test.mts"
   },
   "repository": {
@@ -76,9 +77,9 @@
     "typescript-eslint": "^8.13.0"
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.{js,mjs,ts,mts}": [
       "prettier --write",
-      "eslint --ext ts,js"
+      "eslint"
     ]
   },
   "commitlint": {
