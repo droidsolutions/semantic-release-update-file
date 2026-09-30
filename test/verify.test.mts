@@ -28,6 +28,21 @@ describe("verify", function () {
       .to.be.rejectedWith(AggregateError, "Invalid config, no type for file at index 0 is set!");
   });
 
+  it("should not report a missing type as unsupported type", async function () {
+    const config: UserConfig = {
+      files: [{ path: "some/path" } as K8sFileSpec],
+    };
+
+    const error = await chai.expect(verify(config)).to.be.rejectedWith(AggregateError);
+
+    chai
+      .expect((error as unknown as AggregateError).errors.map((e: Error) => e.message))
+      .to.deep.equal([
+        "Invalid config, no type for file at index 0 is set!",
+        'No write access to the file "some/path".',
+      ]);
+  });
+
   it("should return an error when an unsupported type is set", async function () {
     const config: UserConfig = {
       files: [{ type: "wat", path: "some/path" } as unknown as K8sFileSpec],

@@ -20,9 +20,7 @@ export const verify = async (pluginConfig: Config & UserConfig): Promise<void> =
       index++;
       if (!file.type) {
         errors.push(`Invalid config, no type for file at index ${index} is set!`);
-      }
-
-      if (!supportedFileTypes.includes(file.type)) {
+      } else if (!supportedFileTypes.includes(file.type)) {
         errors.push(`Invalid config, type "${file.type}" for file at index ${index} is not supported!`);
       }
 
