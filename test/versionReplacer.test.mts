@@ -319,6 +319,26 @@ homepage: https://somewhere.on/line`;
         .expect(logSpy.args[0][0])
         .to.equal("Skipping replacement of key RepositoryBranch in xml file because value would be empty.");
     });
+
+    it("should render values mixing text, expressions and interpolate tags", function () {
+      const actual = updateXml(
+        "<A></A><B></B><C></C>",
+        [
+          { key: "A", value: "v${nextRelease.version}-${branch.name}" },
+          { key: "B", value: '${nextRelease.version.split(".")[0]}' },
+          { key: "C", value: "<%= nextRelease.version %>" },
+        ],
+        context,
+      );
+
+      chai.expect(actual).to.equal("<A>v1.0.0-master</A><B>1</B><C>1.0.0</C>");
+    });
+
+    it("should throw when a value references an undefined variable", function () {
+      chai
+        .expect(() => updateXml("<A></A>", [{ key: "A", value: "${UNSET_VARIABLE}" }], context))
+        .to.throw(ReferenceError, "UNSET_VARIABLE is not defined");
+    });
   });
 
   context("updateContainerfile", function () {

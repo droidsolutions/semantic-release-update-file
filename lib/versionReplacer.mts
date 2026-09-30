@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/dot-notation */
-import template from "lodash.template";
+import { template } from "lodash-es";
 import type { PrepareContext } from "semantic-release";
 import type { XmlReplacement } from "./UserConfig.mjs";
 
