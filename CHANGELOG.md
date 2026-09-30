@@ -1,3 +1,26 @@
+# [2.0.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.4.0...v2.0.0) (2026-09-30)
+
+
+* feat!: migrate package to ES modules ([bb4a2b8](https://github.com/droidsolutions/semantic-release-update-file/commit/bb4a2b8899b0ca68547d2cf431ab1bd4ba3e867f))
+
+
+### Bug Fixes
+
+* accept v-prefixed version in pubspec.yaml ([0e3cb7f](https://github.com/droidsolutions/semantic-release-update-file/commit/0e3cb7fa39361d80c96057b00661f72d7265cbbf))
+* **deps:** replace deprecated lodash.template with lodash-es ([1f18474](https://github.com/droidsolutions/semantic-release-update-file/commit/1f18474ae0753655d90ee4423d70e60ad16f42d5))
+* report a missing file type only once ([f9cf696](https://github.com/droidsolutions/semantic-release-update-file/commit/f9cf6965e17afed3e8a405936f0e2b0a5047066a))
+* report each configuration error separately ([780def9](https://github.com/droidsolutions/semantic-release-update-file/commit/780def9e7dd41decaab133bcc9b5ef3ab720d473))
+
+
+### BREAKING CHANGES
+
+* The package is ESM only and can no longer be loaded with
+require(). semantic-release loads plugins via import() since v20, so
+configurations referencing the plugin by name keep working. The minimum
+Node.js version is raised to 22.14 or 24.10, matching semantic-release 25.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
 # [1.4.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.3.2...v1.4.0) (2024-03-11)
 
 
