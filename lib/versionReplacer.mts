@@ -49,7 +49,7 @@ export const updateK8sYaml = (
  */
 export const updateVersionPropertyInYaml = (yamlContent: string, propertyName: string, newValue: string): string => {
   const regex = new RegExp(
-    `^(?<prop>${propertyName}):\\s(?<version>(?<mainversion>(\\d+)\\.(\\d+)\\.(\\d+)-?([a-zA-Z-\\d\\.]*))\\+?(?<build>[a-zA-Z-\\d\\.]*))$`,
+    `^(?<prop>${propertyName}):\\sv?(?<version>(?<mainversion>(\\d+)\\.(\\d+)\\.(\\d+)-?([a-zA-Z-\\d\\.]*))\\+?(?<build>[a-zA-Z-\\d\\.]*))$`,
     "gm",
   );
   const match = regex.exec(yamlContent);

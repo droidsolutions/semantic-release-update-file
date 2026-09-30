@@ -412,5 +412,16 @@ version: 1.20.0+124`;
 
       chai.expect(actual).to.equal(expected);
     });
+
+    it("should keep v prefix of version in yaml file", function () {
+      const sampleContent = `name: some-module
+version: v1.19.0+123`;
+      const actual = updateVersionPropertyInYaml(sampleContent, "version", "1.20.0");
+
+      const expected = `name: some-module
+version: v1.20.0+124`;
+
+      chai.expect(actual).to.equal(expected);
+    });
   });
 });
