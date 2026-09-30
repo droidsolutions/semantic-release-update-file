@@ -1,6 +1,6 @@
-import { resolve } from "path";
+import { resolve } from "node:path";
 import semanticRelease from "semantic-release";
-import type { XmlFileSpec } from "../lib/UserConfig";
+import type { XmlFileSpec } from "../lib/UserConfig.mjs";
 
 void (async () => {
   try {

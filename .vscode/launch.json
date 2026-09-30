@@ -18,10 +18,16 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Mocha tests",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": ["-r", "ts-node/register", "-r", "source-map-support/register", "--timeout", "999999", "${file}"],
-      "env": { "TS_NODE_TRANSPILE_ONLY": "true" }
+      "name": "Mocha tests (ESM)",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/mocha.js",
+      "args": ["--timeout", "999999", "${file}"],
+      "runtimeArgs": [
+        "--loader=ts-node/esm",
+        "--experimental-specifier-resolution=node",
+        "--no-warnings"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }

@@ -1,31 +1,27 @@
 import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import prettier from "eslint-config-prettier";
 import mocha from "eslint-plugin-mocha";
+import node from "eslint-plugin-n";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import node from "eslint-plugin-n";
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: ["coverage/**", "dist/**", "eslint.config.mjs"],
   },
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   prettier,
   mocha.configs.recommended,
   {
     languageOptions: {
-      ecmaVersion: 12,
-      globals: {
-        ...globals.node,
-        ...globals.commonjs,
-      },
+      globals: globals.nodeBuiltin,
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
-      sourceType: "commonjs",
     },
 
     plugins: {
@@ -33,27 +29,6 @@ export default tseslint.config(
     },
 
     rules: {
-      indent: [
-        "error",
-        2,
-        {
-          SwitchCase: 1,
-        },
-      ],
-      "linebreak-style": ["error", "unix"],
-      "no-unused-vars": "off", // Handled by TypeScript
-      quotes: [
-        "error",
-        "double",
-        {
-          avoidEscape: true,
-        },
-      ],
-      semi: ["error", "always"],
-
-      "n/exports-style": ["error"],
-      "n/no-mixed-requires": ["warn"],
-      "n/no-new-require": ["error"],
       "n/no-process-exit": ["warn"],
       "n/no-unsupported-features/es-syntax": ["off"],
       "n/prefer-global/buffer": ["warn"],
@@ -77,19 +52,9 @@ export default tseslint.config(
         },
       ],
     },
-
-    settings: {
-      n: {
-        tryExtensions: [".ts"],
-      },
-    },
   },
   {
-    files: ["test/**/*.{ts,mts}"],
-
-    plugins: {
-      mocha: mocha,
-    },
+    files: ["test/**/*.mts"],
 
     rules: {
       "@typescript-eslint/no-explicit-any": "off",

@@ -1,9 +1,8 @@
-import AggregateError from "aggregate-error";
-import fs from "fs";
-import { access } from "fs/promises";
-import { Config } from "semantic-release";
-import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_K8S, FILE_TYPE_XML, supportedFileTypes } from "./supportedFileTypes";
-import { UserConfig } from "./UserConfig";
+import fs from "node:fs";
+import { access } from "node:fs/promises";
+import type { Config } from "semantic-release";
+import { FILE_TYPE_CONTAINERFILE, FILE_TYPE_K8S, FILE_TYPE_XML, supportedFileTypes } from "./supportedFileTypes.mjs";
+import type { UserConfig } from "./UserConfig.mjs";
 
 /**
  * Executes the verify step of the Semantic Release plugin.
@@ -21,9 +20,7 @@ export const verify = async (pluginConfig: Config & UserConfig): Promise<void> =
       index++;
       if (!file.type) {
         errors.push(`Invalid config, no type for file at index ${index} is set!`);
-      }
-
-      if (!supportedFileTypes.includes(file.type)) {
+      } else if (!supportedFileTypes.includes(file.type)) {
         errors.push(`Invalid config, type "${file.type}" for file at index ${index} is not supported!`);
       }
 
@@ -71,6 +68,7 @@ export const verify = async (pluginConfig: Config & UserConfig): Promise<void> =
   }
 
   if (errors.length > 0) {
-    throw new AggregateError(errors);
+    const causes = errors.map((error) => (typeof error === "string" ? new Error(error) : error));
+    throw new AggregateError(causes, causes.map((error) => error.message).join("\n"));
   }
 };

@@ -1,0 +1,13 @@
+{
+  "extension": [".mts", ".mjs", ".ts"],
+  "node-option": [
+    "experimental-specifier-resolution=node",
+    "loader=ts-node/esm",
+    "disable-warning=ExperimentalWarning",
+    "disable-warning=DeprecationWarning"
+  ],
+  "package": "./package.json",
+  "recursive": true,
+  "watchExtensions": ".mts",
+  "watchFiles": ["src/**/*", "test/**/*"]
+}

@@ -1,13 +1,13 @@
-import chai from "chai";
-import { PrepareContext } from "semantic-release";
-import Sinon, { SinonSpy } from "sinon";
+import * as chai from "chai";
+import type { PrepareContext } from "semantic-release";
+import Sinon, { type SinonSpy } from "sinon";
 import {
   updateContainerfile,
   updateK8sYaml,
   updatePubspecVersion,
   updateVersionPropertyInYaml,
   updateXml,
-} from "../lib/versionReplacer";
+} from "../lib/versionReplacer.mjs";
 
 describe("versionReplacer", function () {
   context("updateK8sYaml", function () {
@@ -319,6 +319,26 @@ homepage: https://somewhere.on/line`;
         .expect(logSpy.args[0][0])
         .to.equal("Skipping replacement of key RepositoryBranch in xml file because value would be empty.");
     });
+
+    it("should render values mixing text, expressions and interpolate tags", function () {
+      const actual = updateXml(
+        "<A></A><B></B><C></C>",
+        [
+          { key: "A", value: "v${nextRelease.version}-${branch.name}" },
+          { key: "B", value: '${nextRelease.version.split(".")[0]}' },
+          { key: "C", value: "<%= nextRelease.version %>" },
+        ],
+        context,
+      );
+
+      chai.expect(actual).to.equal("<A>v1.0.0-master</A><B>1</B><C>1.0.0</C>");
+    });
+
+    it("should throw when a value references an undefined variable", function () {
+      chai
+        .expect(() => updateXml("<A></A>", [{ key: "A", value: "${UNSET_VARIABLE}" }], context))
+        .to.throw(ReferenceError, "UNSET_VARIABLE is not defined");
+    });
   });
 
   context("updateContainerfile", function () {
@@ -409,6 +429,17 @@ version: 1.19.0-dev.21+123`;
       const expected = `name: some-module
 description: Some yaml file
 version: 1.20.0+124`;
+
+      chai.expect(actual).to.equal(expected);
+    });
+
+    it("should keep v prefix of version in yaml file", function () {
+      const sampleContent = `name: some-module
+version: v1.19.0+123`;
+      const actual = updateVersionPropertyInYaml(sampleContent, "version", "1.20.0");
+
+      const expected = `name: some-module
+version: v1.20.0+124`;
 
       chai.expect(actual).to.equal(expected);
     });
