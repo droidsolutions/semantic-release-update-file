@@ -43,7 +43,6 @@
   },
   "homepage": "https://github.com/droidsolutions/semantic-release-update-file#readme",
   "dependencies": {
-    "aggregate-error": "^3.1.0",
     "lodash-es": "^4.18.1"
   },
   "devDependencies": {

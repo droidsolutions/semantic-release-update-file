@@ -1,4 +1,3 @@
-import AggregateError from "aggregate-error";
 import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {
@@ -91,5 +90,28 @@ describe("verify", function () {
       files: [{ type: FILE_TYPE_CONTAINERFILE, path: "some/path" } as unknown as XmlFileSpec],
     };
     await chai.expect(verify(config)).to.be.rejectedWith(AggregateError, "Containerfiles need a label to be replaced.");
+  });
+
+  it("should expose every problem as an Error in the errors property", async function () {
+    const config: UserConfig = {
+      files: [
+        { type: FILE_TYPE_K8S, path: "some/path" } as K8sFileSpec,
+        { type: FILE_TYPE_CONTAINERFILE, path: "other/path" } as unknown as XmlFileSpec,
+      ],
+    };
+
+    const error = await chai.expect(verify(config)).to.be.rejectedWith(AggregateError);
+
+    const errors = (error as unknown as AggregateError).errors as unknown[];
+    chai.expect(errors).to.have.lengthOf(4);
+    chai.expect(errors.every((e) => e instanceof Error)).to.equal(true);
+    chai
+      .expect(errors.map((e) => (e as Error).message))
+      .to.deep.equal([
+        `File at index 0 has type ${FILE_TYPE_K8S} but no image name is set.`,
+        'No write access to the file "some/path".',
+        "Containerfiles need a label to be replaced.",
+        'No write access to the file "other/path".',
+      ]);
   });
 });

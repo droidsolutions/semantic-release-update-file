@@ -1,4 +1,3 @@
-import AggregateError from "aggregate-error";
 import fs from "node:fs";
 import { access } from "node:fs/promises";
 import type { Config } from "semantic-release";
@@ -71,6 +70,7 @@ export const verify = async (pluginConfig: Config & UserConfig): Promise<void> =
   }
 
   if (errors.length > 0) {
-    throw new AggregateError(errors);
+    const causes = errors.map((error) => (typeof error === "string" ? new Error(error) : error));
+    throw new AggregateError(causes, causes.map((error) => error.message).join("\n"));
   }
 };
