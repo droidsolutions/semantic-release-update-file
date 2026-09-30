@@ -8,6 +8,5 @@
   ],
   "package": "./package.json",
   "recursive": true,
-  "watchExtensions": ".mts",
-  "watchFiles": ["src/**/*", "test/**/*"]
+  "watch-files": ["index.mts", "lib/**/*", "test/**/*"]
 }
