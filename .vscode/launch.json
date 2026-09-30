@@ -9,8 +9,8 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/test/debug-semantic-release.ts",
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "program": "${workspaceFolder}/test/debug-semantic-release.mts",
+      "outFiles": ["${workspaceFolder}/dist/**/*.mjs"],
       "preLaunchTask": "${defaultBuildTask}",
       "console": "internalConsole",
       "outputCapture": "std"
