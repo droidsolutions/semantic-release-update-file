@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/droidsolutions/semantic-release-update-file/compare/v2.0.1...v2.0.2) (2026-11-16)
+
+
+### Bug Fixes
+
+* match configured names and versions literally ([b5bb589](https://github.com/droidsolutions/semantic-release-update-file/commit/b5bb5897d9dbb7abb87bea1d5220060f43331a11))
+
 ## [2.0.1](https://github.com/droidsolutions/semantic-release-update-file/compare/v2.0.0...v2.0.1) (2026-11-16)
 
 
