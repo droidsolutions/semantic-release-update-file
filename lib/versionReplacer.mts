@@ -21,23 +21,15 @@ export const updateK8sYaml = (
   newVersion: string,
   oldVersion?: string,
 ): string => {
-  const lastVersion = oldVersion ?? ".*";
-  const regex = new RegExp(`image:\\s+${escapeRegExp(imageName)}:v?(${lastVersion})`, "gm");
-  let match = regex.exec(yamlContent);
+  // Without an old version the whole tag is replaced, but it must stop before a closing quote of a quoted scalar.
+  const lastVersion = oldVersion ?? `[^\\s"']*`;
+  const regex = new RegExp(`(image:\\s+["']?${escapeRegExp(imageName)}:v?)(?:${lastVersion})`, "gm");
 
-  if (match === null) {
+  if (!regex.test(yamlContent)) {
     throw new Error("Unable to match image and old version in yaml file.");
   }
 
-  // Todo use Replace all once support for Node 14 is dropped
-  // return yamlContent.replaceAll(match[0], match[0].replace(match[1], newVersion));
-  let result = yamlContent;
-  while (match !== null) {
-    result = result.replace(match[0], match[0].replace(match[1], newVersion));
-    match = regex.exec(result);
-  }
-
-  return result;
+  return yamlContent.replace(regex, (_match, prefix: string) => `${prefix}${newVersion}`);
 };
 
 /**
@@ -49,8 +41,8 @@ export const updateK8sYaml = (
  */
 export const updateVersionPropertyInYaml = (yamlContent: string, propertyName: string, newValue: string): string => {
   const regex = new RegExp(
-    `^(?<prop>${propertyName}):\\sv?(?<version>(?<mainversion>(\\d+)\\.(\\d+)\\.(\\d+)-?([a-zA-Z-\\d\\.]*))\\+?(?<build>[a-zA-Z-\\d\\.]*))$`,
-    "gm",
+    `^(?<prefix>${propertyName}:\\sv?)(?<version>(?<mainversion>(\\d+)\\.(\\d+)\\.(\\d+)-?([a-zA-Z-\\d\\.]*))\\+?(?<build>[a-zA-Z-\\d\\.]*))$`,
+    "m",
   );
   const match = regex.exec(yamlContent);
 
@@ -63,7 +55,11 @@ export const updateVersionPropertyInYaml = (yamlContent: string, propertyName: s
     versionString = `${newValue}+${parseInt(match.groups["build"]) + 1}`;
   }
 
-  return yamlContent.replace(match.groups["version"], versionString);
+  // Replace at the position of the match, the same version string may appear earlier in the file.
+  const start = match.index;
+  const end = start + match[0].length;
+
+  return `${yamlContent.slice(0, start)}${match.groups["prefix"]}${versionString}${yamlContent.slice(end)}`;
 };
 
 /**
@@ -124,16 +120,19 @@ export const updateXml = (content: string, replacements: XmlReplacement[], conte
  * @returns The given content with the value of the given label replaced with the new version number.
  */
 export const updateContainerfile = (content: string, label: string, context: PrepareContext): string => {
-  const regex = new RegExp(`^LABEL\\s+${label}=\\"v?(.*)\\"$`, "m");
-  const match = content.match(regex);
+  const regex = new RegExp(`^(LABEL\\s+${label}="v?).*(")$`, "m");
 
-  if (match === null) {
+  if (!regex.test(content)) {
     context.logger.error(`Unable to match label ${label} in containerfile`);
 
     return content;
   }
 
-  return content.replace(match[0], match[0].replace(match[1], context.nextRelease?.version));
+  // Rebuild the line from its parts, replacing the old value by search would misplace an empty one.
+  return content.replace(
+    regex,
+    (_match, prefix: string, suffix: string) => `${prefix}${context.nextRelease?.version}${suffix}`,
+  );
 };
 
 /**

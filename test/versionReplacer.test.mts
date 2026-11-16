@@ -118,6 +118,53 @@ spec:
       chai.expect(actual).to.equal(expected);
     });
 
+    it("should replace version of double-quoted image", function () {
+      const actual = updateK8sYaml(
+        `      - image: "my.registry.com/some/image:1.2.3"\n`,
+        "my.registry.com/some/image",
+        "1.3.0",
+      );
+
+      chai.expect(actual).to.equal(`      - image: "my.registry.com/some/image:1.3.0"\n`);
+    });
+
+    it("should replace version of single-quoted image", function () {
+      const actual = updateK8sYaml(
+        `      - image: 'my.registry.com/some/image:v1.2.3'\n`,
+        "my.registry.com/some/image",
+        "1.3.0",
+      );
+
+      chai.expect(actual).to.equal(`      - image: 'my.registry.com/some/image:v1.3.0'\n`);
+    });
+
+    it("should replace version of quoted image with old version and suffix", function () {
+      const actual = updateK8sYaml(
+        `      - image: "my.registry.com/some/image:v2.8.2-alpine"\n`,
+        "my.registry.com/some/image",
+        "3.0.0",
+        "2.8.2",
+      );
+
+      chai.expect(actual).to.equal(`      - image: "my.registry.com/some/image:v3.0.0-alpine"\n`);
+    });
+
+    it("should replace all occurrences of quoted and unquoted images", function () {
+      const content = `        - image: "my.registry.com/some/image:2.0.0"
+---
+        - image: my.registry.com/some/image:2.0.0
+---
+        - image: 'my.registry.com/some/image:2.0.0'`;
+      const actual = updateK8sYaml(content, "my.registry.com/some/image", "2.1.0");
+
+      const expected = `        - image: "my.registry.com/some/image:2.1.0"
+---
+        - image: my.registry.com/some/image:2.1.0
+---
+        - image: 'my.registry.com/some/image:2.1.0'`;
+      chai.expect(actual).to.equal(expected);
+    });
+
     it("should throw an error if image could not be matched", function () {
       chai
         .expect(() => updateK8sYaml(sampleContent, "my.registry.com/some/other", "2.8.2", "3.0.0"))
@@ -252,6 +299,21 @@ homepage: https://somewhere.on/line`;
 
       chai.expect(actual).to.equal(expected);
     });
+
+    it("should only replace the version property when the version also appears earlier in the file", function () {
+      const content = `name: app
+description: Port of foo 1.2.3+4 to Flutter
+version: 1.2.3+4
+`;
+
+      const actual = updatePubspecVersion(content, "1.2.3", "1.3.0");
+
+      const expected = `name: app
+description: Port of foo 1.2.3+4 to Flutter
+version: 1.3.0+5
+`;
+      chai.expect(actual).to.equal(expected);
+    });
   });
 
   context("updateXml", function () {
@@ -384,6 +446,12 @@ WORKDIR /source`;
 
       chai.expect(actual).to.equal(expected);
     });
+
+    it("should set version of empty label", function () {
+      const actual = updateContainerfile(`FROM alpine\nLABEL version=""\n`, "version", context);
+
+      chai.expect(actual).to.equal(`FROM alpine\nLABEL version="1.2.0"\n`);
+    });
   });
 
   context("updatePropertyInYaml", function () {
@@ -440,6 +508,19 @@ version: v1.19.0+123`;
 
       const expected = `name: some-module
 version: v1.20.0+124`;
+
+      chai.expect(actual).to.equal(expected);
+    });
+
+    it("should replace the property value instead of an earlier occurrence of the same version", function () {
+      const sampleContent = `name: some-module
+# bumped from 0.9.0 in the last release
+version: 0.9.0`;
+      const actual = updateVersionPropertyInYaml(sampleContent, "version", "1.0.0");
+
+      const expected = `name: some-module
+# bumped from 0.9.0 in the last release
+version: 1.0.0`;
 
       chai.expect(actual).to.equal(expected);
     });
