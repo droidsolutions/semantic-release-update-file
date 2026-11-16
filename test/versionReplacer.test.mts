@@ -165,6 +165,19 @@ spec:
       chai.expect(actual).to.equal(expected);
     });
 
+    it("should match the old version literally", function () {
+      chai
+        .expect(() =>
+          updateK8sYaml(
+            `        - image: my.registry.com/some/image:1x2x3\n`,
+            "my.registry.com/some/image",
+            "2.0.0",
+            "1.2.3",
+          ),
+        )
+        .to.throw("Unable to match image and old version in yaml file.");
+    });
+
     it("should throw an error if image could not be matched", function () {
       chai
         .expect(() => updateK8sYaml(sampleContent, "my.registry.com/some/other", "2.8.2", "3.0.0"))
@@ -396,6 +409,16 @@ version: 1.3.0+5
       chai.expect(actual).to.equal("<A>v1.0.0-master</A><B>1</B><C>1.0.0</C>");
     });
 
+    it("should match the key literally", function () {
+      const actual = updateXml(
+        "<Version_Prefix>0.1.0</Version_Prefix>\n<Version.Prefix>0.9.0</Version.Prefix>",
+        [{ key: "Version.Prefix", value: "${nextRelease.version}" }],
+        context,
+      );
+
+      chai.expect(actual).to.equal("<Version_Prefix>0.1.0</Version_Prefix>\n<Version.Prefix>1.0.0</Version.Prefix>");
+    });
+
     it("should throw when a value references an undefined variable", function () {
       chai
         .expect(() => updateXml("<A></A>", [{ key: "A", value: "${UNSET_VARIABLE}" }], context))
@@ -444,6 +467,20 @@ LABEL version="v1.2.0"
 
 WORKDIR /source`;
 
+      chai.expect(actual).to.equal(expected);
+    });
+
+    it("should match the label name literally", function () {
+      const content = `FROM alpine
+LABEL app-version="0.1.0"
+LABEL app.version="1.1.0"
+`;
+      const actual = updateContainerfile(content, "app.version", context);
+
+      const expected = `FROM alpine
+LABEL app-version="0.1.0"
+LABEL app.version="1.2.0"
+`;
       chai.expect(actual).to.equal(expected);
     });
 
@@ -497,6 +534,17 @@ version: 1.19.0-dev.21+123`;
       const expected = `name: some-module
 description: Some yaml file
 version: 1.20.0+124`;
+
+      chai.expect(actual).to.equal(expected);
+    });
+
+    it("should match the property name literally", function () {
+      const sampleContent = `app_version: 0.1.0
+app.version: 0.9.0`;
+      const actual = updateVersionPropertyInYaml(sampleContent, "app.version", "1.0.0");
+
+      const expected = `app_version: 0.1.0
+app.version: 1.0.0`;
 
       chai.expect(actual).to.equal(expected);
     });
