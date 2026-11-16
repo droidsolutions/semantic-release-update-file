@@ -22,7 +22,7 @@ export const updateK8sYaml = (
   oldVersion?: string,
 ): string => {
   // Without an old version the whole tag is replaced, but it must stop before a closing quote of a quoted scalar.
-  const lastVersion = oldVersion ?? `[^\\s"']*`;
+  const lastVersion = oldVersion !== undefined ? escapeRegExp(oldVersion) : `[^\\s"']*`;
   const regex = new RegExp(`(image:\\s+["']?${escapeRegExp(imageName)}:v?)(?:${lastVersion})`, "gm");
 
   if (!regex.test(yamlContent)) {
@@ -41,7 +41,7 @@ export const updateK8sYaml = (
  */
 export const updateVersionPropertyInYaml = (yamlContent: string, propertyName: string, newValue: string): string => {
   const regex = new RegExp(
-    `^(?<prefix>${propertyName}:\\sv?)(?<version>(?<mainversion>(\\d+)\\.(\\d+)\\.(\\d+)-?([a-zA-Z-\\d\\.]*))\\+?(?<build>[a-zA-Z-\\d\\.]*))$`,
+    `^(?<prefix>${escapeRegExp(propertyName)}:\\sv?)(?<version>(?<mainversion>(\\d+)\\.(\\d+)\\.(\\d+)-?([a-zA-Z-\\d\\.]*))\\+?(?<build>[a-zA-Z-\\d\\.]*))$`,
     "m",
   );
   const match = regex.exec(yamlContent);
@@ -89,7 +89,8 @@ export const updatePubspecVersion = (
 export const updateXml = (content: string, replacements: XmlReplacement[], context: PrepareContext): string => {
   let result = content;
   for (const replacement of replacements) {
-    const regex = `(<${replacement.key}>(.*)</${replacement.key}>)`;
+    const key = escapeRegExp(replacement.key);
+    const regex = new RegExp(`(<${key}>(.*)</${key}>)`);
 
     const match = result.match(regex);
 
@@ -120,7 +121,7 @@ export const updateXml = (content: string, replacements: XmlReplacement[], conte
  * @returns The given content with the value of the given label replaced with the new version number.
  */
 export const updateContainerfile = (content: string, label: string, context: PrepareContext): string => {
-  const regex = new RegExp(`^(LABEL\\s+${label}="v?).*(")$`, "m");
+  const regex = new RegExp(`^(LABEL\\s+${escapeRegExp(label)}="v?).*(")$`, "m");
 
   if (!regex.test(content)) {
     context.logger.error(`Unable to match label ${label} in containerfile`);
