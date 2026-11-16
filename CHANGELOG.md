@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/droidsolutions/semantic-release-update-file/compare/v2.0.0...v2.0.1) (2026-11-16)
+
+
+### Bug Fixes
+
+* replace versions at the matched position only ([da3e1ca](https://github.com/droidsolutions/semantic-release-update-file/commit/da3e1cad8acac3a346f5b354eac78f3e98c2f44b)), closes [#1348](https://github.com/droidsolutions/semantic-release-update-file/issues/1348)
+
 # [2.0.0](https://github.com/droidsolutions/semantic-release-update-file/compare/v1.4.0...v2.0.0) (2026-09-30)
 
 
